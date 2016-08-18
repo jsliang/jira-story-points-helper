@@ -1,6 +1,6 @@
 # JIRA Task Board Helper
 
-Chrome Web Store: 
+Chrome Web Store: https://chrome.google.com/webstore/detail/ldnpljmdajcdedkbohffomaoigpnakle
 
 ## Development
 
