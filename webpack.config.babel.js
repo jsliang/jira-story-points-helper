@@ -20,13 +20,13 @@ const config = {
   devtool: IS_PRODUCTION ? 'cheap-source-map' : 'eval',
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: /node_modules|build/,
       loader: 'babel-loader',
     }],
   },
   resolve: {
-    extensions: ['', '.js'],
+    extensions: ['', '.js', '.jsx'],
     modulesDirectories: ['src', 'node_modules'],
   },
 };
