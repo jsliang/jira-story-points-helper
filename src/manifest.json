@@ -4,17 +4,17 @@
   "description": "Calculating each assignee's estimate statistic / story points.",
   "version": "0.0.0",
   "permissions": [
-    "declarativeContent",
-    "tabs"
+    "https://*.atlassian.net/secure/RapidBoard.jspa*"
   ],
-  "page_action": {
-    "default_title": "JIRA Task Board Helper",
-    "default_popup": "index.html"
-  },
-  "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": false
-  }
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.atlassian.net/secure/RapidBoard.jspa*"
+      ],
+      "js": [
+        "index.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
 }

@@ -9,7 +9,6 @@
     "babel-core": "^6.11.4",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
-    "babel-polyfill": "^6.9.1",
     "babel-preset-es2015-node6": "^0.2.0",
     "babel-preset-es2017": "^1.6.1",
     "babel-preset-stage-0": "^6.3.13",
@@ -17,10 +16,10 @@
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
     "eslint-plugin-import": "^1.12.0",
-    "html-webpack-plugin": "^2.21.0",
     "webpack": "^1.13.1"
   },
   "dependencies": {
+    "jquery": "^3.1.0",
     "superagent": "^2.2.0"
   }
 }

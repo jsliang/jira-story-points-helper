@@ -1,10 +1,8 @@
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const config = {
   entry: {
-    background: './src/background.js',
-    app: ['babel-polyfill', './src/index.js'],
+    index: './src/index.js',
   },
   output: {
     path: './build',
@@ -14,10 +12,6 @@ const config = {
     new CopyWebpackPlugin([
       { from: './src/manifest.json', to: 'manifest.json' },
     ]),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      template: 'src/index.html.tpl',
-    }),
   ],
   module: {
     loaders: [{
