@@ -5,6 +5,15 @@ import { render } from 'react-dom';
 
 import SummaryTable from './SummaryTable';
 
+const getRapidViewId = url => {
+  const re = /rapidView=(\d+)/;
+  const m = re.exec(url);
+  if (m) {
+    return m[1];
+  }
+  return null;
+};
+
 const aggregateIssuesByAssignee = issues => {
   const assignees = issues.reduce((reduction, issue) => {
     const assigneeId = issue.get('assignee');
@@ -50,7 +59,8 @@ class JiraTaskBoardHelper {
     document.body.appendChild(div);
   }
 
-  fetchData(rapidViewId) {
+  fetchData() {
+    const rapidViewId = getRapidViewId(window.location.search);
     request
       .get(`https://appier.atlassian.net/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId=${rapidViewId}`)
       .withCredentials()
