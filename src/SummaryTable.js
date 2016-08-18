@@ -13,19 +13,45 @@ const bgColor = {
 };
 
 class SummaryTable extends PureComponent {
+  constructor() {
+    super();
+
+    this.showPopover = this.showPopover.bind(this);
+    this.hidePopover = this.hidePopover.bind(this);
+
+    this.state = {
+      show: false,
+    };
+  }
+
+  showPopover() {
+    this.setState({
+      show: true,
+    });
+  }
+  hidePopover() {
+    this.setState({
+      show: false,
+    });
+  }
+
   render() {
-    const { assignees, pointsByAssignee } = this.props;
+    const {
+      props: { assignees, pointsByAssignee },
+      state: { show },
+    } = this;
 
     const popoverStyle = {
       backgroundColor: '#fff',
+      borderRadius: '5px',
       bottom: 0,
       boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
       fontSize: '15px',
       left: 0,
-      padding: '10px',
       position: 'fixed',
+      transform: show ? undefined : 'translate(-90%, 50%)',
+      transition: 'transform 0.5s ease-in-out',
       zIndex: 100,
-      borderRadius: '5px',
     };
 
     const barStyle = {
@@ -37,7 +63,33 @@ class SummaryTable extends PureComponent {
     };
 
     return (
-      <div style={popoverStyle}>
+    <div
+      onMouseEnter={this.showPopover}
+      onMouseLeave={this.hidePopover}
+      style={popoverStyle}
+    >
+      <div style={{
+        position: 'relative',
+        padding: '15px',
+      }}>
+        <div style={{
+          alignItems: 'center',
+          backgroundColor: '#205081',
+          borderRadius: '0 5px 0 20px',
+          color: '#fff',
+          display: 'flex',
+          float: 'right',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          height: '30px',
+          justifyContent: 'center',
+          opacity: show ? 0 : 100,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          transition: 'opacity 0.5s ease-in-out',
+          width: '30px',
+        }}>J</div>
         <table style={{ borderCollapse: 'separate', borderSpacing: '6px' }}>
           <thead>
             <tr>
@@ -119,6 +171,7 @@ class SummaryTable extends PureComponent {
           </tbody>
         </table>
       </div>
+    </div>
     );
   }
 }
