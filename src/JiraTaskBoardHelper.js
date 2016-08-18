@@ -8,6 +8,10 @@ import SummaryTable from './SummaryTable';
 const aggregateIssuesByAssignee = issues => {
   const assignees = issues.reduce((reduction, issue) => {
     const assigneeId = issue.get('assignee');
+    if (!assigneeId) {
+      return reduction;
+    }
+
     if (reduction.has(assigneeId)) {
       return reduction;
     }
