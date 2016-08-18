@@ -1,6 +1,10 @@
 import $ from 'jquery';
+import React from 'react';
 import request from 'superagent';
 import { fromJS, Map } from 'immutable';
+import { render } from 'react-dom';
+
+import SummaryTable from './SummaryTable';
 
 const aggregateIssuesByAssignee = issues => {
   const assignees = issues.reduce((reduction, issue) => {
@@ -67,6 +71,13 @@ class JiraTaskBoardHelper {
   updateView() {
     console.log(this.assignees.toJS());
     console.log(this.pointsByAssignee.toJS());
+    render(
+      <SummaryTable
+        assignees={this.assignees}
+        pointsByAssignee={this.pointsByAssignee}
+      />,
+      document.getElementById('jira-taskboard-helper')
+    );
   }
 }
 
