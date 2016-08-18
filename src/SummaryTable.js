@@ -38,22 +38,26 @@ class SummaryTable extends PureComponent {
                 const assigneeId = assignee.get('id');
                 const points = pointsByAssignee.get(assigneeId);
 
-                return (
-                  <tr key={assigneeId}>
-                    <td>
-                      <div className="ghx-avatar">
-                        <img
-                          src={assignee.get('avatarUrl')}
-                          className="ghx-avatar-img"
-                          alt={`Assignee: ${assignee.get('name')}`}
-                        />
-                      </div>
-                    </td>
-                    <td>{points.get('new')}</td>
-                    <td>{points.get('indeterminate')}</td>
-                    <td>{points.get('done')}</td>
-                  </tr>
-                );
+                if (points.get('new') || points.get('intermediate') || points.get('done')) {
+                  return (
+                    <tr key={assigneeId}>
+                      <td>
+                        <div className="ghx-avatar">
+                          <img
+                            src={assignee.get('avatarUrl')}
+                            className="ghx-avatar-img"
+                            alt={`Assignee: ${assignee.get('name')}`}
+                          />
+                        </div>
+                      </td>
+                      <td>{points.get('new')}</td>
+                      <td>{points.get('indeterminate')}</td>
+                      <td>{points.get('done')}</td>
+                    </tr>
+                  );
+                }
+
+                return null;
               })
               .toJS()
           }
