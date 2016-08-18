@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "JIRA Task Board Helper",
   "description": "Calculating each assignee's estimate statistic / story points.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "permissions": [
     "https://*.atlassian.net/secure/RapidBoard.jspa*"
   ],
