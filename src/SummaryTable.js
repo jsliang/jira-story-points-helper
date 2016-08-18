@@ -21,9 +21,11 @@ class SummaryTable extends PureComponent {
       bottom: 0,
       boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
       fontSize: '15px',
-      left: '10px',
+      left: 0,
+      padding: '10px',
       position: 'fixed',
       zIndex: 100,
+      borderRadius: '5px',
     };
 
     const barStyle = {
@@ -36,7 +38,7 @@ class SummaryTable extends PureComponent {
 
     return (
       <div style={popoverStyle}>
-        <table style={{ borderCollapse: 'separate', borderSpacing: '6px', margin: '5px' }}>
+        <table style={{ borderCollapse: 'separate', borderSpacing: '6px' }}>
           <thead>
             <tr>
               <td></td>
