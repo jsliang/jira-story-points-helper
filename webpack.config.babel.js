@@ -1,5 +1,8 @@
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const IS_PRODUCTION = NODE_ENV === 'production';
+
 const config = {
   entry: {
     index: './src/index.js',
@@ -13,6 +16,8 @@ const config = {
       { from: './src/manifest.json', to: 'manifest.json' },
     ]),
   ],
+  debug: !IS_PRODUCTION,
+  devtool: IS_PRODUCTION ? 'cheap-source-map' : 'eval',
   module: {
     loaders: [{
       test: /\.js$/,
