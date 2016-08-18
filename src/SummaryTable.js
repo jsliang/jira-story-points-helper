@@ -23,7 +23,7 @@ class SummaryTable extends PureComponent {
         <table style={{ borderCollapse: 'separate', borderSpacing: '6px', margin: '5px' }}>
           <thead>
             <tr>
-              <th>Assignee</th>
+              <td>Assignee</td>
               <td>new</td>
               <td>indeterminate</td>
               <td>done</td>
@@ -42,13 +42,13 @@ class SummaryTable extends PureComponent {
                   return (
                     <tr key={assigneeId}>
                       <td>
-                        <div className="ghx-avatar">
-                          <img
-                            src={assignee.get('avatarUrl')}
-                            className="ghx-avatar-img"
-                            alt={`Assignee: ${assignee.get('name')}`}
-                          />
-                        </div>
+                        <img
+                          alt={`Assignee: ${assignee.get('name')}`}
+                          className="ghx-avatar-img"
+                          src={assignee.get('avatarUrl')}
+                        />
+                        &nbsp;
+                        {assignee.get('name')}
                       </td>
                       <td>{points.get('new')}</td>
                       <td>{points.get('indeterminate')}</td>
