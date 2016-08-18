@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import React from 'react';
 import request from 'superagent';
 import { fromJS, Map } from 'immutable';
@@ -37,6 +36,12 @@ class JiraTaskBoardHelper {
   }
 
   initPopover() {
+    const setElementAttr = (el, attr, value) => {
+      const att = document.createAttribute(attr);
+      att.value = value;
+      el.setAttributeNode(att);
+    };
+
     const popoverStyle = [
       'align-items: stretch;',
       'background-color: #fff;',
@@ -48,9 +53,11 @@ class JiraTaskBoardHelper {
       'position: fixed;',
       'z-index: 100;',
     ];
-    $('body').append(`
-      <div id='jira-taskboard-helper' style='${popoverStyle.join(' ')}'></div>
-    `);
+
+    const div = document.createElement("div");
+    setElementAttr(div, 'id', 'jira-taskboard-helper');
+    setElementAttr(div, 'style', popoverStyle.join(' '));
+    document.body.appendChild(div);
   }
 
   fetchAllData(rapidViewId) {
@@ -69,8 +76,6 @@ class JiraTaskBoardHelper {
   }
 
   updateView() {
-    console.log(this.assignees.toJS());
-    console.log(this.pointsByAssignee.toJS());
     render(
       <SummaryTable
         assignees={this.assignees}
