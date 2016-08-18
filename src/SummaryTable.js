@@ -6,8 +6,20 @@ class SummaryTable extends PureComponent {
   render() {
     const { assignees, pointsByAssignee } = this.props;
 
+    const popoverStyle = {
+      alignItems: 'stretch',
+      backgroundColor: '#fff',
+      bottom: 0,
+      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
+      display: 'flex',
+      fontSize: '15px',
+      left: '10px',
+      position: 'fixed',
+      zIndex: 100,
+    };
+
     return (
-      <div>
+      <div style={popoverStyle}>
         <table style={{ borderCollapse: 'separate', borderSpacing: '6px', margin: '5px' }}>
           <thead>
             <tr>

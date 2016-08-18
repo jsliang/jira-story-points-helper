@@ -40,21 +40,9 @@ class JiraTaskBoardHelper {
       el.setAttributeNode(att);
     };
 
-    const popoverStyle = [
-      'align-items: stretch;',
-      'background-color: #fff;',
-      'bottom: 10px;',
-      'box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);',
-      'display: flex;',
-      'font-size: 15px;',
-      'left: 0;',
-      'position: fixed;',
-      'z-index: 100;',
-    ];
-
     const div = document.createElement("div");
     setElementAttr(div, 'id', 'jira-taskboard-helper');
-    setElementAttr(div, 'style', popoverStyle.join(' '));
+
     document.body.appendChild(div);
   }
 
