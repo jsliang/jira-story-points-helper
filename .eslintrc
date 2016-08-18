@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    },
+    "sourceType": "module"
+  },
+  "rules": {
+    "camelcase": 0,
+    "import/prefer-default-export": 0,
+    "func-names": 0,
+    "no-console": 0,
+    "no-throw-literal": 0,
+    "no-underscore-dangle": 0,
+    "new-cap": [
+      2,
+      {
+        "capIsNew": false,
+        "newIsCap": false
+      }
+    ]
+  }
+}

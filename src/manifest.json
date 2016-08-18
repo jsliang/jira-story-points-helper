@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "JIRA Task Board Helper",
+  "description": "Calculating each assignee's estimate statistic / story points.",
+  "version": "0.0.0",
+  "permissions": [
+    "declarativeContent",
+    "tabs"
+  ],
+  "page_action": {
+    "default_title": "JIRA Task Board Helper",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  }
+}
