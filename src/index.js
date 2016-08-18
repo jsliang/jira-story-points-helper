@@ -11,5 +11,4 @@ const getRapidViewId = url => {
 
 const rapidViewId = getRapidViewId(window.location.search);
 const helper = new JiraTaskBoardHelper();
-helper.initPopover();
-helper.fetchAllData(rapidViewId);
+helper.fetchData(rapidViewId);

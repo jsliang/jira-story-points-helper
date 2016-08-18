@@ -33,9 +33,6 @@ const aggregateIssuesByAssignee = issues => {
 
 class JiraTaskBoardHelper {
   constructor() {
-  }
-
-  initPopover() {
     const setElementAttr = (el, attr, value) => {
       const att = document.createAttribute(attr);
       att.value = value;
@@ -60,7 +57,7 @@ class JiraTaskBoardHelper {
     document.body.appendChild(div);
   }
 
-  fetchAllData(rapidViewId) {
+  fetchData(rapidViewId) {
     request
       .get(`https://appier.atlassian.net/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId=${rapidViewId}`)
       .withCredentials()
