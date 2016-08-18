@@ -1,7 +1,6 @@
 {
   "manifest_version": 2,
   "name": "JIRA Task Board Helper",
-  "default_locale": "en",
   "description": "Calculating each assignee's story points.",
   "version": "0.0.1",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
