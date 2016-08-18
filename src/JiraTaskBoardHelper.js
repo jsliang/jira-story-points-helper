@@ -13,6 +13,7 @@ const aggregateIssuesByAssignee = issues => {
     }
 
     return reduction.set(assigneeId, Map({
+      id: assigneeId,
       name: issue.get('assigneeName'),
       avatarUrl: issue.get('avatarUrl'),
     }));
