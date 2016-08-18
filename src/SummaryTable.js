@@ -2,10 +2,14 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
+const STATUS_NEW = 'new';
+const STATUS_INDETERMINATE = 'indeterminate';
+const STATUS_DONE = 'done';
+
 const bgColor = {
-  new: '#ECEFF1',
-  indeterminate: '#FFF176',
-  done: '#81C784',
+  [STATUS_NEW]: '#ECEFF1',
+  [STATUS_INDETERMINATE]: '#FFF176',
+  [STATUS_DONE]: '#81C784',
 };
 
 class SummaryTable extends PureComponent {
@@ -48,9 +52,9 @@ class SummaryTable extends PureComponent {
                 const assigneeId = assignee.get('id');
                 const points = pointsByAssignee.get(assigneeId);
 
-                const totalPoints = (points.get('new') || 0)
-                  + (points.get('intermediate') || 0)
-                  + (points.get('done') || 0);
+                const totalPoints = (points.get(STATUS_NEW) || 0)
+                  + (points.get(STATUS_INDETERMINATE) || 0)
+                  + (points.get(STATUS_DONE) || 0);
 
                 const genStatusPart = (statusKey) => {
                   const pnt = points.get(statusKey) || 0;
@@ -68,12 +72,17 @@ class SummaryTable extends PureComponent {
                     padding: '4px 6px',
                   };
 
+                  const [major, minor] = pnt.toFixed(2).split('.');
+                  const pntStr = (+minor === 0)
+                    ? major
+                    : `${major}.${minor.replace(/0+$/, '')}`;
+
                   return (
                     <div
                       style={partStyle}
                       title={`${statusKey}: ${pnt} points (${percentage}%)`}
                     >
-                      {pnt}
+                      {pntStr}
                     </div>
                   );
                 };
@@ -92,9 +101,9 @@ class SummaryTable extends PureComponent {
                       </td>
                       <td>
                         <div style={barStyle}>
-                          {genStatusPart('new')}
-                          {genStatusPart('indeterminate')}
-                          {genStatusPart('done')}
+                          {genStatusPart(STATUS_NEW)}
+                          {genStatusPart(STATUS_INDETERMINATE)}
+                          {genStatusPart(STATUS_DONE)}
                         </div>
                       </td>
                     </tr>
