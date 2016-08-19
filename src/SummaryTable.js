@@ -4,23 +4,18 @@ import React from 'react';
 import { Map } from 'immutable';
 
 import ReloadButton from './ReloadButton';
-
-const STATUS_NEW = 'new';
-const STATUS_INDETERMINATE = 'indeterminate';
-const STATUS_DONE = 'done';
+import {
+  formatNumber,
+  STATUS_NEW,
+  STATUS_INDETERMINATE,
+  STATUS_DONE,
+} from './util';
 
 const bgColor = {
   [STATUS_NEW]: '#ECEFF1',
   [STATUS_INDETERMINATE]: '#FFF176',
   [STATUS_DONE]: '#81C784',
 };
-
-const formatNumber = n => {
-  const [major, minor] = n.toFixed(2).split('.');
-  return (+minor === 0)
-    ? major
-    : `${major}.${minor.replace(/0+$/, '')}`;
-}
 
 
 class SummaryTable extends PureComponent {
