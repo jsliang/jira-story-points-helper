@@ -21,4 +21,4 @@ $ npm start
 
 4. Click **Load unpacked extension…** to pop up a file-selection dialog.
 
-5. Navigate to this repo directory and select the `dist` folder.
+5. Navigate to this repo directory and select the `build` folder.
