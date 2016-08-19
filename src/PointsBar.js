@@ -47,6 +47,7 @@ class PointsBar extends PureComponent {
 
           return (
             <div
+              key={statusKey}
               style={partStyle}
               title={`${statusKey}: ${pntStr} points (${percentage}%)`}
             >
