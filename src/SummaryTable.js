@@ -49,41 +49,23 @@ class SummaryTable extends PureComponent {
       state: { show },
     } = this;
 
-    const popoverStyle = {
-      backgroundColor: '#fff',
-      borderRadius: '5px',
-      bottom: 0,
-      boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
-      color: '#333',
-      fontSize: '13px',
-      left: 0,
-      position: 'fixed',
-      transform: show ? undefined : 'translate(-90%, 50%)',
-      transition: 'transform 0.5s ease-in-out',
-      zIndex: 100,
-    };
-
-    const totalStyle = {
-      alignItems: 'center',
-      display: 'flex',
-      height: '100%',
-      justifyContent: 'flex-end',
-      width: '100%',
-    };
-
-    const barStyle = {
-      alignItems: 'stretch',
-      boxSizing: 'border-box',
-      display: 'flex',
-      height: '100%',
-      width: '100%',
-    };
-
     return (
     <div
       onMouseEnter={this.showPopover}
       onMouseLeave={this.hidePopover}
-      style={popoverStyle}
+      style={{
+        backgroundColor: '#fff',
+        borderRadius: '5px',
+        bottom: 0,
+        boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
+        color: '#333',
+        fontSize: '13px',
+        left: 0,
+        position: 'fixed',
+        transform: show ? undefined : 'translate(-90%, 50%)',
+        transition: 'transform 0.5s ease-in-out',
+        zIndex: 100,
+      }}
     >
       <div style={{
         position: 'relative',
@@ -168,12 +150,24 @@ class SummaryTable extends PureComponent {
                         <span>{assignee.get('name')}</span>
                       </td>
                       <td style={{ padding: '0 6px' }}>
-                        <div style={totalStyle}>
+                        <div style={{
+                          alignItems: 'center',
+                          display: 'flex',
+                          height: '100%',
+                          justifyContent: 'flex-end',
+                          width: '100%',
+                        }}>
                           {formatNumber(totalPoints)}
                         </div>
                       </td>
                       <td>
-                        <div style={barStyle}>
+                        <div style={{
+                          alignItems: 'stretch',
+                          boxSizing: 'border-box',
+                          display: 'flex',
+                          height: '100%',
+                          width: '100%',
+                        }}>
                           {genStatusPart(STATUS_NEW)}
                           {genStatusPart(STATUS_INDETERMINATE)}
                           {genStatusPart(STATUS_DONE)}
