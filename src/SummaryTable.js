@@ -2,6 +2,8 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
+import ReloadButton from './ReloadButton';
+
 const STATUS_NEW = 'new';
 const STATUS_INDETERMINATE = 'indeterminate';
 const STATUS_DONE = 'done';
@@ -71,24 +73,7 @@ class SummaryTable extends PureComponent {
         position: 'relative',
         padding: '20px',
       }}>
-        <div style={{
-          alignItems: 'center',
-          backgroundColor: '#205081',
-          borderRadius: '0 5px 0 20px',
-          color: '#fff',
-          display: 'flex',
-          float: 'right',
-          fontSize: '16px',
-          fontWeight: 'bold',
-          height: '30px',
-          justifyContent: 'center',
-          opacity: show ? 0 : 100,
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          transition: 'opacity 0.5s ease-in-out',
-          width: '30px',
-        }}>J</div>
+        <ReloadButton />
         <table style={{ borderCollapse: 'separate' }}>
           <thead>
             <tr>
