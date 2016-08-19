@@ -79,6 +79,7 @@ class JiraTaskBoardHelper {
     render(
       <SummaryTable
         assignees={this.assignees}
+        doFetchData={this.fetchData.bind(this)}
         pointsByAssignee={this.pointsByAssignee}
       />,
       document.getElementById('jira-taskboard-helper')

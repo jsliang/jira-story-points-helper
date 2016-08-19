@@ -47,7 +47,7 @@ class SummaryTable extends PureComponent {
 
   render() {
     const {
-      props: { assignees, pointsByAssignee },
+      props: { assignees, doFetchData, pointsByAssignee },
       state: { show },
     } = this;
 
@@ -73,7 +73,7 @@ class SummaryTable extends PureComponent {
         position: 'relative',
         padding: '20px',
       }}>
-        <ReloadButton />
+        <ReloadButton onClick={doFetchData} />
         <table style={{ borderCollapse: 'separate' }}>
           <thead>
             <tr>
@@ -176,6 +176,7 @@ class SummaryTable extends PureComponent {
 
 SummaryTable.defaultProps = {
   assignees: Map(),
+  doFetchData: () => {},
   pointsByAssignee: Map(),
 };
 
