@@ -105,9 +105,10 @@ class SummaryTable extends PureComponent {
                     color: '#555',
                     display: 'flex',
                     flex: percentage,
-                    lineHeight: '13px',
                     justifyContent: 'center',
+                    lineHeight: '13px',
                     padding: '4px 6px',
+                    transition: 'all 0.3s ease-in-out',
                   };
 
                   const pntStr = formatNumber(pnt);
