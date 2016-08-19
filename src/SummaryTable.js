@@ -73,7 +73,10 @@ class SummaryTable extends PureComponent {
         position: 'relative',
         padding: '20px',
       }}>
-        <ReloadButton onClick={doFetchData} />
+        <ReloadButton
+          showReloadIcon={show}
+          onClick={doFetchData}
+        />
         <table style={{ borderCollapse: 'separate' }}>
           <thead>
             <tr>

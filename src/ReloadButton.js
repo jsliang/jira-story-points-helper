@@ -25,7 +25,12 @@ class ReloadButton extends PureComponent {
   }
 
   render() {
-    const { hover } = this.state;
+    const {
+      props: { showReloadIcon },
+      state: { hover },
+    } = this;
+
+    const bgColor = showReloadIcon ? '#296ca3' : '#205081';
 
     return (
       <div
@@ -34,10 +39,10 @@ class ReloadButton extends PureComponent {
         onMouseLeave={this.onMouseOut}
         style={{
           alignItems: 'center',
-          backgroundColor: hover ? '#3b7fc4' : '#205081',
+          backgroundColor: (showReloadIcon && hover) ? '#3b7fc4' : bgColor,
           borderRadius: '0 5px 0 20px',
           color: '#fff',
-          cursor: 'pointer',
+          cursor: showReloadIcon ? 'pointer' : 'default',
           display: 'flex',
           float: 'right',
           fontSize: '16px',
@@ -52,7 +57,7 @@ class ReloadButton extends PureComponent {
         }}
         title="Reload data"
       >
-        J
+        { showReloadIcon ? 'R' : 'J' }
       </div>
     );
   }
@@ -60,6 +65,7 @@ class ReloadButton extends PureComponent {
 
 ReloadButton.defaultProps = {
   onClick: () => {},
+  showReloadIcon: false,
 };
 
 export default ReloadButton;
