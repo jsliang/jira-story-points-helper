@@ -8,6 +8,8 @@ import {
   formatNumber,
   getTotalPoints,
   STATUS_BG_COLOR,
+  STATUS_BORDER_RADIUS,
+  STATUS_FONT_COLOR,
 } from './util';
 
 class PointsBar extends PureComponent {
@@ -31,8 +33,9 @@ class PointsBar extends PureComponent {
           const partStyle = {
             alignItems: 'center',
             backgroundColor: STATUS_BG_COLOR[statusKey],
+            borderRadius: STATUS_BORDER_RADIUS[statusKey],
             boxSizing: 'border-box',
-            color: '#555',
+            color: STATUS_FONT_COLOR[statusKey],
             display: 'flex',
             flex: percentage,
             justifyContent: 'center',
