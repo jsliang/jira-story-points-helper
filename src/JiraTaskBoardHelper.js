@@ -3,7 +3,7 @@ import request from 'superagent';
 import { fromJS, Map } from 'immutable';
 import { render } from 'react-dom';
 
-import SummaryTable from './SummaryTable';
+import Popover from './Popover';
 
 const getAccountId = host => {
   return host.replace('.atlassian.net', '').trim();
@@ -83,7 +83,7 @@ class JiraTaskBoardHelper {
 
   updateView() {
     render(
-      <SummaryTable
+      <Popover
         assignees={this.assignees}
         doFetchData={this.fetchData.bind(this)}
         fetchTime={this.fetchTime}
