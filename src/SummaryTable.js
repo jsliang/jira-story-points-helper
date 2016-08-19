@@ -4,10 +4,9 @@ import React from 'react';
 import { Map } from 'immutable';
 
 import {
+  ALL_STATUS,
   formatNumber,
-  STATUS_NEW,
-  STATUS_INDETERMINATE,
-  STATUS_DONE,
+  getTotalPoints,
 } from './util';
 
 import ReloadButton from './ReloadButton';
@@ -92,9 +91,7 @@ class SummaryTable extends PureComponent {
                   const assigneeId = assignee.get('id');
                   const points = pointsByAssignee.get(assigneeId);
 
-                  const totalPoints = (points.get(STATUS_NEW) || 0)
-                    + (points.get(STATUS_INDETERMINATE) || 0)
-                    + (points.get(STATUS_DONE) || 0);
+                  const totalPoints = getTotalPoints(points);
 
                   if (totalPoints > 0) {
                     return (
