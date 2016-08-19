@@ -38,6 +38,12 @@ class SummaryTable extends PureComponent {
       state: { show },
     } = this;
 
+    const totalStoryPoints = assignees.valueSeq().reduce(
+      (reduction, assignee) =>
+        reduction + getTotalPoints(pointsByAssignee.get(assignee.get('id'))),
+      0
+    );
+
     return (
     <div
       onMouseEnter={this.showPopover}
@@ -68,8 +74,8 @@ class SummaryTable extends PureComponent {
         <p style={{ color: '#999', fontSize: '0.75rem' }}>
           Last updated time: {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
         </p>
-        {assignees.count() === 0
-          ? <p>No active sprint.</p>
+        {(assignees.count() === 0 || totalStoryPoints === 0)
+          ? <p>No {(assignees.count() === 0) ? 'active sprint' : 'story points'}.</p>
           : (
           <table style={{ borderCollapse: 'separate' }}>
             <thead>
