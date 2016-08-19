@@ -1,3 +1,4 @@
+import moment from 'moment';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
@@ -47,7 +48,7 @@ class SummaryTable extends PureComponent {
 
   render() {
     const {
-      props: { assignees, doFetchData, pointsByAssignee },
+      props: { assignees, doFetchData, fetchTime, pointsByAssignee },
       state: { show },
     } = this;
 
@@ -71,12 +72,16 @@ class SummaryTable extends PureComponent {
     >
       <div style={{
         position: 'relative',
-        padding: '20px',
+        padding: '10px 20px',
       }}>
         <ReloadButton
+          fetchTime={fetchTime}
           showReloadIcon={show}
           onClick={doFetchData}
         />
+        <p style={{ color: '#999', fontSize: '12px' }}>
+          Last updated time: {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
+        </p>
         <table style={{ borderCollapse: 'separate' }}>
           <thead>
             <tr>
@@ -181,6 +186,7 @@ class SummaryTable extends PureComponent {
 SummaryTable.defaultProps = {
   assignees: Map(),
   doFetchData: () => {},
+  fetchTime: new Date(),
   pointsByAssignee: Map(),
 };
 

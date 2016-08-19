@@ -65,6 +65,7 @@ class JiraTaskBoardHelper {
       .get(`https://appier.atlassian.net/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId=${rapidViewId}`)
       .withCredentials()
       .then(res => {
+        this.fetchTime = new Date();
         this.issues = fromJS(res.body.issuesData.issues);
 
         const { assignees, pointsByAssignee } = aggregateIssuesByAssignee(this.issues);
@@ -80,6 +81,7 @@ class JiraTaskBoardHelper {
       <SummaryTable
         assignees={this.assignees}
         doFetchData={this.fetchData.bind(this)}
+        fetchTime={this.fetchTime}
         pointsByAssignee={this.pointsByAssignee}
       />,
       document.getElementById('jira-taskboard-helper')

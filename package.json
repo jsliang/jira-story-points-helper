@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "immutable": "^3.8.1",
+    "moment": "^2.14.1",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-pure-render": "^1.0.2",
