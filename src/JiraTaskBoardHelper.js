@@ -5,6 +5,10 @@ import { render } from 'react-dom';
 
 import SummaryTable from './SummaryTable';
 
+const getAccountId = host => {
+  return host.replace('.atlassian.net', '').trim();
+};
+
 const getRapidViewId = url => {
   const re = /rapidView=(\d+)/;
   const m = re.exec(url);
@@ -60,9 +64,10 @@ class JiraTaskBoardHelper {
   }
 
   fetchData() {
+    const accountId = getAccountId(window.location.host || window.location.hostname);
     const rapidViewId = getRapidViewId(window.location.search);
     request
-      .get(`https://appier.atlassian.net/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId=${rapidViewId}`)
+      .get(`https://${accountId}.atlassian.net/rest/greenhopper/1.0/xboard/work/allData.json?rapidViewId=${rapidViewId}`)
       .withCredentials()
       .then(res => {
         this.fetchTime = new Date();
