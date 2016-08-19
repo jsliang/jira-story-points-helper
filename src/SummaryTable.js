@@ -62,7 +62,7 @@ class SummaryTable extends PureComponent {
         bottom: 0,
         boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
         color: '#333',
-        fontSize: '13px',
+        fontSize: '0.8125rem',
         left: 0,
         position: 'fixed',
         transform: show ? undefined : 'translate(-90%, 50%)',
@@ -79,7 +79,7 @@ class SummaryTable extends PureComponent {
           showReloadIcon={show}
           onClick={doFetchData}
         />
-        <p style={{ color: '#999', fontSize: '12px' }}>
+        <p style={{ color: '#999', fontSize: '0.75rem' }}>
           Last updated time: {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
         </p>
         <table style={{ borderCollapse: 'separate' }}>
@@ -114,7 +114,7 @@ class SummaryTable extends PureComponent {
                     display: 'flex',
                     flex: percentage,
                     justifyContent: 'center',
-                    lineHeight: '13px',
+                    lineHeight: '0.8125rem',
                     padding: '4px 6px',
                     transition: 'all 0.3s ease-in-out',
                   };
