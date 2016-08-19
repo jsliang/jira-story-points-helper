@@ -12,6 +12,14 @@ const bgColor = {
   [STATUS_DONE]: '#81C784',
 };
 
+const formatNumber = n => {
+  const [major, minor] = n.toFixed(2).split('.');
+  return (+minor === 0)
+    ? major
+    : `${major}.${minor.replace(/0+$/, '')}`;
+}
+
+
 class SummaryTable extends PureComponent {
   constructor() {
     super();
@@ -46,12 +54,21 @@ class SummaryTable extends PureComponent {
       borderRadius: '5px',
       bottom: 0,
       boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
-      fontSize: '15px',
+      color: '#333',
+      fontSize: '13px',
       left: 0,
       position: 'fixed',
       transform: show ? undefined : 'translate(-90%, 50%)',
       transition: 'transform 0.5s ease-in-out',
       zIndex: 100,
+    };
+
+    const totalStyle = {
+      alignItems: 'center',
+      display: 'flex',
+      height: '100%',
+      justifyContent: 'flex-end',
+      width: '100%',
     };
 
     const barStyle = {
@@ -70,7 +87,7 @@ class SummaryTable extends PureComponent {
     >
       <div style={{
         position: 'relative',
-        padding: '15px',
+        padding: '20px',
       }}>
         <div style={{
           alignItems: 'center',
@@ -90,11 +107,12 @@ class SummaryTable extends PureComponent {
           transition: 'opacity 0.5s ease-in-out',
           width: '30px',
         }}>J</div>
-        <table style={{ borderCollapse: 'separate', borderSpacing: '6px' }}>
+        <table style={{ borderCollapse: 'separate' }}>
           <thead>
             <tr>
               <td></td>
-              <td>new / indeterminate / done</td>
+              <td style={{ color: '#707070', padding: '0 6px' }}>Total</td>
+              <td style={{ color: '#707070' }}>New / Indeterminate / Done</td>
             </tr>
           </thead>
           <tbody>
@@ -120,21 +138,17 @@ class SummaryTable extends PureComponent {
                     color: '#555',
                     display: 'flex',
                     flex: percentage,
-                    fontSize: '13px',
                     lineHeight: '13px',
                     justifyContent: 'center',
                     padding: '4px 6px',
                   };
 
-                  const [major, minor] = pnt.toFixed(2).split('.');
-                  const pntStr = (+minor === 0)
-                    ? major
-                    : `${major}.${minor.replace(/0+$/, '')}`;
+                  const pntStr = formatNumber(pnt);
 
                   return (
                     <div
                       style={partStyle}
-                      title={`${statusKey}: ${pnt} points (${percentage}%)`}
+                      title={`${statusKey}: ${pntStr} points (${percentage}%)`}
                     >
                       {pntStr}
                     </div>
@@ -151,7 +165,12 @@ class SummaryTable extends PureComponent {
                           src={assignee.get('avatarUrl')}
                         />
                         &nbsp;
-                        <span style={{ fontSize: '13px' }}>{assignee.get('name')}</span>
+                        <span>{assignee.get('name')}</span>
+                      </td>
+                      <td style={{ padding: '0 6px' }}>
+                        <div style={totalStyle}>
+                          {formatNumber(totalPoints)}
+                        </div>
                       </td>
                       <td>
                         <div style={barStyle}>
