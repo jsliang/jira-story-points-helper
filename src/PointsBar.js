@@ -5,12 +5,11 @@ import { Map } from 'immutable';
 import ReloadButton from './ReloadButton';
 import {
   ALL_STATUS,
-  formatNumber,
-  getTotalPoints,
   STATUS_BG_COLOR,
   STATUS_BORDER_RADIUS,
   STATUS_FONT_COLOR,
-} from './util';
+} from './constants';
+import { formatNumber, getTotalPoints } from './util';
 
 class PointsBar extends PureComponent {
   render() {

@@ -3,11 +3,8 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
-import {
-  ALL_STATUS,
-  formatNumber,
-  getTotalPoints,
-} from './util';
+import { ALL_STATUS } from './constants';
+import { formatNumber, getTotalPoints } from './util';
 
 import ReloadButton from './ReloadButton';
 import PointsBar from './PointsBar';
