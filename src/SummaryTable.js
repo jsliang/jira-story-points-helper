@@ -82,101 +82,105 @@ class SummaryTable extends PureComponent {
         <p style={{ color: '#999', fontSize: '0.75rem' }}>
           Last updated time: {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
         </p>
-        <table style={{ borderCollapse: 'separate' }}>
-          <thead>
-            <tr>
-              <td></td>
-              <td style={{ color: '#707070', padding: '0 6px' }}>Total</td>
-              <td style={{ color: '#707070' }}>New / Indeterminate / Done</td>
-            </tr>
-          </thead>
-          <tbody>
-          {
-            assignees
-              .valueSeq()
-              .sortBy(assignee => assignee.get('name'))
-              .map(assignee => {
-                const assigneeId = assignee.get('id');
-                const points = pointsByAssignee.get(assigneeId);
+        {assignees.count() === 0
+          ? <p>No active sprint.</p>
+          : (
+          <table style={{ borderCollapse: 'separate' }}>
+            <thead>
+              <tr>
+                <td></td>
+                <td style={{ color: '#707070', padding: '0 6px' }}>Total</td>
+                <td style={{ color: '#707070' }}>New / Indeterminate / Done</td>
+              </tr>
+            </thead>
+            <tbody>
+            {
+              assignees
+                .valueSeq()
+                .sortBy(assignee => assignee.get('name'))
+                .map(assignee => {
+                  const assigneeId = assignee.get('id');
+                  const points = pointsByAssignee.get(assigneeId);
 
-                const totalPoints = (points.get(STATUS_NEW) || 0)
-                  + (points.get(STATUS_INDETERMINATE) || 0)
-                  + (points.get(STATUS_DONE) || 0);
+                  const totalPoints = (points.get(STATUS_NEW) || 0)
+                    + (points.get(STATUS_INDETERMINATE) || 0)
+                    + (points.get(STATUS_DONE) || 0);
 
-                const genStatusPart = (statusKey) => {
-                  const pnt = points.get(statusKey) || 0;
-                  const percentage = Math.round(pnt / totalPoints * 100);
-                  const partStyle = {
-                    alignItems: 'center',
-                    backgroundColor: bgColor[statusKey],
-                    boxSizing: 'border-box',
-                    color: '#555',
-                    display: 'flex',
-                    flex: percentage,
-                    justifyContent: 'center',
-                    lineHeight: '0.8125rem',
-                    padding: '4px 6px',
-                    transition: 'all 0.3s ease-in-out',
+                  const genStatusPart = (statusKey) => {
+                    const pnt = points.get(statusKey) || 0;
+                    const percentage = Math.round(pnt / totalPoints * 100);
+                    const partStyle = {
+                      alignItems: 'center',
+                      backgroundColor: bgColor[statusKey],
+                      boxSizing: 'border-box',
+                      color: '#555',
+                      display: 'flex',
+                      flex: percentage,
+                      justifyContent: 'center',
+                      lineHeight: '0.8125rem',
+                      padding: '4px 6px',
+                      transition: 'all 0.3s ease-in-out',
+                    };
+
+                    const pntStr = formatNumber(pnt);
+
+                    return (
+                      <div
+                        style={partStyle}
+                        title={`${statusKey}: ${pntStr} points (${percentage}%)`}
+                      >
+                        {pntStr}
+                      </div>
+                    );
                   };
 
-                  const pntStr = formatNumber(pnt);
+                  if (totalPoints > 0) {
+                    return (
+                      <tr key={assigneeId}>
+                        <td>
+                          <img
+                            alt={`Assignee: ${assignee.get('name')}`}
+                            className="ghx-avatar-img"
+                            src={assignee.get('avatarUrl')}
+                          />
+                          &nbsp;
+                          <span>{assignee.get('name')}</span>
+                        </td>
+                        <td style={{ padding: '0 6px' }}>
+                          <div style={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            height: '100%',
+                            justifyContent: 'flex-end',
+                            width: '100%',
+                          }}>
+                            {formatNumber(totalPoints)}
+                          </div>
+                        </td>
+                        <td>
+                          <div style={{
+                            alignItems: 'stretch',
+                            boxSizing: 'border-box',
+                            display: 'flex',
+                            height: '100%',
+                            width: '100%',
+                          }}>
+                            {genStatusPart(STATUS_NEW)}
+                            {genStatusPart(STATUS_INDETERMINATE)}
+                            {genStatusPart(STATUS_DONE)}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }
 
-                  return (
-                    <div
-                      style={partStyle}
-                      title={`${statusKey}: ${pntStr} points (${percentage}%)`}
-                    >
-                      {pntStr}
-                    </div>
-                  );
-                };
-
-                if (totalPoints > 0) {
-                  return (
-                    <tr key={assigneeId}>
-                      <td>
-                        <img
-                          alt={`Assignee: ${assignee.get('name')}`}
-                          className="ghx-avatar-img"
-                          src={assignee.get('avatarUrl')}
-                        />
-                        &nbsp;
-                        <span>{assignee.get('name')}</span>
-                      </td>
-                      <td style={{ padding: '0 6px' }}>
-                        <div style={{
-                          alignItems: 'center',
-                          display: 'flex',
-                          height: '100%',
-                          justifyContent: 'flex-end',
-                          width: '100%',
-                        }}>
-                          {formatNumber(totalPoints)}
-                        </div>
-                      </td>
-                      <td>
-                        <div style={{
-                          alignItems: 'stretch',
-                          boxSizing: 'border-box',
-                          display: 'flex',
-                          height: '100%',
-                          width: '100%',
-                        }}>
-                          {genStatusPart(STATUS_NEW)}
-                          {genStatusPart(STATUS_INDETERMINATE)}
-                          {genStatusPart(STATUS_DONE)}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }
-
-                return null;
-              })
-              .toJS()
-          }
-          </tbody>
-        </table>
+                  return null;
+                })
+                .toJS()
+            }
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
     );
