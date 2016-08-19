@@ -3,7 +3,6 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
-import ReloadButton from './ReloadButton';
 import {
   formatNumber,
   STATUS_NEW,
@@ -11,12 +10,8 @@ import {
   STATUS_DONE,
 } from './util';
 
-const bgColor = {
-  [STATUS_NEW]: '#ECEFF1',
-  [STATUS_INDETERMINATE]: '#FFF176',
-  [STATUS_DONE]: '#81C784',
-};
-
+import ReloadButton from './ReloadButton';
+import PointsBar from './PointsBar';
 
 class SummaryTable extends PureComponent {
   constructor() {
@@ -101,34 +96,6 @@ class SummaryTable extends PureComponent {
                     + (points.get(STATUS_INDETERMINATE) || 0)
                     + (points.get(STATUS_DONE) || 0);
 
-                  const genStatusPart = (statusKey) => {
-                    const pnt = points.get(statusKey) || 0;
-                    const percentage = Math.round(pnt / totalPoints * 100);
-                    const partStyle = {
-                      alignItems: 'center',
-                      backgroundColor: bgColor[statusKey],
-                      boxSizing: 'border-box',
-                      color: '#555',
-                      display: 'flex',
-                      flex: percentage,
-                      justifyContent: 'center',
-                      lineHeight: '0.8125rem',
-                      padding: '4px 6px',
-                      transition: 'all 0.3s ease-in-out',
-                    };
-
-                    const pntStr = formatNumber(pnt);
-
-                    return (
-                      <div
-                        style={partStyle}
-                        title={`${statusKey}: ${pntStr} points (${percentage}%)`}
-                      >
-                        {pntStr}
-                      </div>
-                    );
-                  };
-
                   if (totalPoints > 0) {
                     return (
                       <tr key={assigneeId}>
@@ -153,17 +120,7 @@ class SummaryTable extends PureComponent {
                           </div>
                         </td>
                         <td>
-                          <div style={{
-                            alignItems: 'stretch',
-                            boxSizing: 'border-box',
-                            display: 'flex',
-                            height: '100%',
-                            width: '100%',
-                          }}>
-                            {genStatusPart(STATUS_NEW)}
-                            {genStatusPart(STATUS_INDETERMINATE)}
-                            {genStatusPart(STATUS_DONE)}
-                          </div>
+                          <PointsBar points={points} />
                         </td>
                       </tr>
                     );
