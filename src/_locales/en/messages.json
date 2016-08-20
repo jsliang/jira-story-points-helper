@@ -8,6 +8,9 @@
   "txtLastUpdatedTime": {
     "message": "Last updated time: "
   },
+  "txtReloadData": {
+    "message": "Reload data"
+  },
   "txtErrNoActiveSprint": {
     "message": "No active sprint."
   },
