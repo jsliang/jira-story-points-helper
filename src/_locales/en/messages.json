@@ -7,5 +7,17 @@
   },
   "txtLastUpdatedTime": {
     "message": "Last updated time: "
+  },
+  "txtTotal": {
+    "message": "Total"
+  },
+  "txtNew": {
+    "message": "New"
+  },
+  "txtIndeterminate": {
+    "message": "Indeterminate"
+  },
+  "txtDone": {
+    "message": "Done"
   }
 }

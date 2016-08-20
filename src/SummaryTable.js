@@ -29,8 +29,16 @@ class SummaryTable extends PureComponent {
         <thead>
           <tr>
             <td></td>
-            <td style={{ color: '#707070', padding: '0 6px' }}>Total</td>
-            <td style={{ color: '#707070' }}>New / Indeterminate / Done</td>
+            <td style={{ color: '#707070', padding: '0 6px' }}>
+              {chrome.i18n.getMessage('txtTotal')}
+            </td>
+            <td style={{ color: '#707070' }}>
+              {chrome.i18n.getMessage('txtNew')}
+              &nbsp;/&nbsp;
+              {chrome.i18n.getMessage('txtIndeterminate')}
+              &nbsp;/&nbsp;
+              {chrome.i18n.getMessage('txtDone')}
+            </td>
           </tr>
         </thead>
         <tbody>
