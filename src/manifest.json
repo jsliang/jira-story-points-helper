@@ -5,7 +5,7 @@
   "version": "0.0.6",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-taskboard-helper",
-  "default_locale": "zh",
+  "default_locale": "zh_TW",
   "permissions": [
     "https://*.atlassian.net/secure/RapidBoard.jspa*"
   ],
