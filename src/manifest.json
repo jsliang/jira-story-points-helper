@@ -6,7 +6,7 @@
   "version": "0.0.8",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-story-points-helper",
-  "default_locale": "zh_TW",
+  "default_locale": "en",
   "permissions": [
     "https://*.atlassian.net/secure/RapidBoard.jspa*"
   ],
