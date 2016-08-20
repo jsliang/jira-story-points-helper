@@ -55,7 +55,7 @@ class Popover extends PureComponent {
     >
       <div style={{
         position: 'relative',
-        padding: '10px 20px',
+        padding: '20px',
       }}>
         <ReloadButton
           fetchTime={fetchTime}

@@ -1,6 +1,7 @@
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
+import IconLogo from '../icons/IconLogo';
 import IconReload from '../icons/IconReload';
 
 class ReloadButton extends PureComponent {
@@ -32,8 +33,6 @@ class ReloadButton extends PureComponent {
       state: { hover },
     } = this;
 
-    const bgColor = showReloadIcon ? '#296ca3' : '#205081';
-
     return (
       <div
         onClick={this.props.onClick}
@@ -41,7 +40,7 @@ class ReloadButton extends PureComponent {
         onMouseLeave={this.onMouseOut}
         style={{
           alignItems: 'center',
-          backgroundColor: (showReloadIcon && hover) ? '#3b7fc4' : bgColor,
+          backgroundColor: (showReloadIcon && hover) ? '#3b7fc4' : '#fff',
           borderRadius: '0 5px 0 20px',
           color: '#fff',
           cursor: showReloadIcon ? 'pointer' : 'default',
@@ -60,7 +59,9 @@ class ReloadButton extends PureComponent {
         }}
         title={chrome.i18n.getMessage('txtReloadData')}
       >
-        { showReloadIcon ? <IconReload color='#ffffff' /> : 'J' }
+        { showReloadIcon
+          ? <IconReload color={hover ? '#fff' : '#205081'} />
+          : <IconLogo /> }
       </div>
     );
   }

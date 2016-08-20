@@ -31,14 +31,24 @@ const config = {
   debug: !IS_PRODUCTION,
   devtool: IS_PRODUCTION ? 'cheap-source-map' : 'eval',
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules|build|dist/,
-      loader: 'babel',
-      query: {
-        presets: ['es2015'],
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules|build|dist/,
+        loader: 'babel',
+        query: {
+          presets: ['es2015'],
+        },
       },
-    }],
+      {
+        test: /\.png$/,
+        loader: 'url-loader',
+        query: {
+          limit: 10000,
+          mimetype: 'image/png',
+        },
+      },
+    ],
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
