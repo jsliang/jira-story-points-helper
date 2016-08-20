@@ -24,7 +24,7 @@ const config = {
         : false,
       mangle: IS_PRODUCTION,
       sourceMap: !IS_PRODUCTION,
-    })
+    }),
   ],
   debug: !IS_PRODUCTION,
   devtool: IS_PRODUCTION ? 'cheap-source-map' : 'eval',
@@ -34,8 +34,8 @@ const config = {
       exclude: /node_modules|build|dist/,
       loader: 'babel',
       query: {
-        presets: ['es2015']
-      }
+        presets: ['es2015'],
+      },
     }],
   },
   resolve: {
