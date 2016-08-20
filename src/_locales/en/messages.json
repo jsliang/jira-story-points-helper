@@ -8,6 +8,12 @@
   "txtLastUpdatedTime": {
     "message": "Last updated time: "
   },
+  "txtErrNoActiveSprint": {
+    "message": "No active sprint."
+  },
+  "txtErrNoStoryPoints": {
+    "message": "No story points."
+  },
   "txtTotal": {
     "message": "Total"
   },
