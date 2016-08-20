@@ -3,11 +3,10 @@ import request from 'superagent';
 import { fromJS, Map } from 'immutable';
 import { render } from 'react-dom';
 
-import Popover from './Popover';
+import Popover from './components/Popover';
 
-const getAccountId = host => {
-  return host.replace('.atlassian.net', '').trim();
-};
+const getAccountId = host =>
+  host.replace('.atlassian.net', '').trim();
 
 const getRapidViewId = url => {
   const re = /rapidView=(\d+)/;
@@ -57,7 +56,7 @@ class JiraTaskBoardHelper {
       el.setAttributeNode(att);
     };
 
-    const div = document.createElement("div");
+    const div = document.createElement('div');
     setElementAttr(div, 'id', 'jira-taskboard-helper');
 
     document.body.appendChild(div);
