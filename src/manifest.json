@@ -1,10 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "JIRA Task Board Helper",
-  "description": "Visualizing each assignee's story points in the active sprint",
+  "name": "__MSG_extName__",
+  "description": "__MSG_extDesc__",
   "version": "0.0.6",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-taskboard-helper",
+  "default_locale": "en",
   "permissions": [
     "https://*.atlassian.net/secure/RapidBoard.jspa*"
   ],

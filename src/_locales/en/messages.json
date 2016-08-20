@@ -1,0 +1,8 @@
+{
+  "extName": {
+    "message": "JIRA Task Board Helper"
+  },
+  "extDesc": {
+    "message": "Visualizing each assignee's story points in the active sprint"
+  }
+}
