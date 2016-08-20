@@ -22,3 +22,7 @@ $ npm start
 4. Click **Load unpacked extension…** to pop up a file-selection dialog.
 
 5. Navigate to this repo directory and select the `build` folder.
+
+## Credits
+
+`icon.svg` is drawn with [Method Draw](http://editor.method.ac/), optimized with [svgo](https://github.com/svg/svgo), and converted to `icon.png` with [Cloud Convert](https://cloudconvert.com/svg-to-png).
