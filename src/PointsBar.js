@@ -2,7 +2,6 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
-import ReloadButton from './ReloadButton';
 import {
   ALL_STATUS,
   STATUS_BG_COLOR,
@@ -28,7 +27,7 @@ class PointsBar extends PureComponent {
       {
         ALL_STATUS.map((statusKey) => {
           const pnt = points.get(statusKey) || 0;
-          const percentage = Math.round(pnt / totalPoints * 100);
+          const percentage = Math.round((pnt / totalPoints) * 100);
           const partStyle = {
             alignItems: 'center',
             backgroundColor: STATUS_BG_COLOR[statusKey],

@@ -25,6 +25,7 @@
     ],
     "react/jsx-filename-extension": 0,
     "react/jsx-first-prop-new-line": 0,
+    "react/prefer-stateless-function": 0,
     "react/prop-types": 0,
     "react/self-closing-comp": 0
   }
