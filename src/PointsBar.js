@@ -7,6 +7,7 @@ import {
   STATUS_BG_COLOR,
   STATUS_BORDER_RADIUS,
   STATUS_FONT_COLOR,
+  STATUS_TEXT,
 } from './constants';
 import { formatNumber, getTotalPoints } from './util';
 
@@ -48,7 +49,10 @@ class PointsBar extends PureComponent {
             <div
               key={statusKey}
               style={partStyle}
-              title={`${statusKey}: ${pntStr} points (${percentage}%)`}
+              title={
+                `${STATUS_TEXT[statusKey]}: ${pntStr}`
+                + ` (${percentage}%)`
+              }
             >
               {pntStr}
             </div>

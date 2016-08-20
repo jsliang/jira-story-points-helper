@@ -1,0 +1,32 @@
+{
+  "extName": {
+    "message": "JIRA Task Board Helper"
+  },
+  "extDesc": {
+    "message": "Visualizing each assignee's story points in the active sprint"
+  },
+  "txtLastUpdatedTime": {
+    "message": "Last updated time: "
+  },
+  "txtReloadData": {
+    "message": "Reload data"
+  },
+  "txtErrNoActiveSprint": {
+    "message": "No active sprint."
+  },
+  "txtErrNoStoryPoints": {
+    "message": "No story points."
+  },
+  "txtTotal": {
+    "message": "Total"
+  },
+  "txtNew": {
+    "message": "New"
+  },
+  "txtIndeterminate": {
+    "message": "Indeterminate"
+  },
+  "txtDone": {
+    "message": "Done"
+  }
+}

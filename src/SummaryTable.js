@@ -11,7 +11,7 @@ class SummaryTable extends PureComponent {
     const { assignees, pointsByAssignee } = this.props;
 
     if (assignees.count() === 0) {
-      return <p>No active sprint.</p>;
+      return <p>{chrome.i18n.getMessage('txtErrNoActiveSprint')}</p>;
     }
 
     const totalStoryPoints = assignees.valueSeq().reduce(
@@ -21,7 +21,7 @@ class SummaryTable extends PureComponent {
     );
 
     if (totalStoryPoints === 0) {
-      return <p>No story points.</p>;
+      return <p>{chrome.i18n.getMessage('txtErrNoStoryPoints')}</p>;
     }
 
     return (
@@ -29,8 +29,16 @@ class SummaryTable extends PureComponent {
         <thead>
           <tr>
             <td></td>
-            <td style={{ color: '#707070', padding: '0 6px' }}>Total</td>
-            <td style={{ color: '#707070' }}>New / Indeterminate / Done</td>
+            <td style={{ color: '#707070', padding: '0 6px' }}>
+              {chrome.i18n.getMessage('txtTotal')}
+            </td>
+            <td style={{ color: '#707070' }}>
+              {chrome.i18n.getMessage('txtNew')}
+              &nbsp;/&nbsp;
+              {chrome.i18n.getMessage('txtIndeterminate')}
+              &nbsp;/&nbsp;
+              {chrome.i18n.getMessage('txtDone')}
+            </td>
           </tr>
         </thead>
         <tbody>

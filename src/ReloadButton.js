@@ -56,7 +56,7 @@ class ReloadButton extends PureComponent {
           transition: 'background-color 0.3s ease-in-out',
           width: '30px',
         }}
-        title="Reload data"
+        title={chrome.i18n.getMessage('txtReloadData')}
       >
         { showReloadIcon ? (
           <svg width="14" height="14" viewBox="0 0 16 16">

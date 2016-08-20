@@ -63,7 +63,8 @@ class Popover extends PureComponent {
           onClick={doFetchData}
         />
         <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
-          Last updated time: {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
+          {chrome.i18n.getMessage('txtLastUpdatedTime')}
+          {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
         </p>
         <SummaryTable
           assignees={assignees}

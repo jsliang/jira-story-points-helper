@@ -1,0 +1,32 @@
+{
+  "extName": {
+    "message": "JIRA 點數小幫手"
+  },
+  "extDesc": {
+    "message": "圖像化呈現目前 sprint 中每個人負責的點數狀況"
+  },
+  "txtLastUpdatedTime": {
+    "message": "資料更新時間："
+  },
+  "txtReloadData": {
+    "message": "重新載入資料"
+  },
+  "txtErrNoActiveSprint": {
+    "message": "目前沒有進行中的 sprint"
+  },
+  "txtErrNoStoryPoints": {
+    "message": "總點數為 0，無法繪製圖表"
+  },
+  "txtTotal": {
+    "message": "總計"
+  },
+  "txtNew": {
+    "message": "未開始"
+  },
+  "txtIndeterminate": {
+    "message": "進行中"
+  },
+  "txtDone": {
+    "message": "已完成"
+  }
+}

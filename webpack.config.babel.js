@@ -14,7 +14,8 @@ const config = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { from: './src/manifest.json', to: 'manifest.json' },
+      { from: './src/manifest.json' },
+      { from: './src/_locales', to: '_locales' },
     ]),
     new webpack.optimize.UglifyJsPlugin({
       beautify: !IS_PRODUCTION,
