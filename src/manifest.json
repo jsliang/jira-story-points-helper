@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_extName__",
   "description": "__MSG_extDesc__",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-taskboard-helper",
   "default_locale": "zh_TW",
