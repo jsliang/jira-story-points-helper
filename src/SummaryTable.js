@@ -49,7 +49,7 @@ class SummaryTable extends PureComponent {
                   <tr key={assigneeId}>
                     <td>
                       <img
-                        alt={`Assignee: ${assignee.get('name')}`}
+                        alt={assignee.get('name')}
                         className="ghx-avatar-img"
                         src={assignee.get('avatarUrl')}
                       />
