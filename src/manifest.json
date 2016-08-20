@@ -1,10 +1,11 @@
 {
   "manifest_version": 2,
   "name": "__MSG_extName__",
+  "short_name": "jira-story-points-helper",
   "description": "__MSG_extDesc__",
   "version": "0.0.7",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
-  "homepage_url": "https://github.com/jsliang/jira-taskboard-helper",
+  "homepage_url": "https://github.com/jsliang/jira-story-points-helper",
   "default_locale": "zh_TW",
   "permissions": [
     "https://*.atlassian.net/secure/RapidBoard.jspa*"
