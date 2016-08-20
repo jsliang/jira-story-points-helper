@@ -4,5 +4,8 @@
   },
   "extDesc": {
     "message": "Visualizing each assignee's story points in the active sprint"
+  },
+  "txtLastUpdatedTime": {
+    "message": "Last updated time: "
   }
 }
