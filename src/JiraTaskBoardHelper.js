@@ -1,6 +1,7 @@
+import _get from 'lodash.get';
+import _has from 'lodash.has';
 import React from 'react';
 import request from 'superagent';
-import { fromJS, Map } from 'immutable';
 import { render } from 'react-dom';
 
 import Popover from './components/Popover';
@@ -19,31 +20,47 @@ const getRapidViewId = url => {
 
 const aggregateIssuesByAssignee = issues => {
   const assignees = issues.reduce((reduction, issue) => {
-    const assigneeId = issue.get('assignee');
+    const assigneeId = issue.assignee;
     if (!assigneeId) {
       return reduction;
     }
 
-    if (reduction.has(assigneeId)) {
+    if (_has(reduction, assigneeId)) {
       return reduction;
     }
 
-    return reduction.set(assigneeId, Map({
-      id: assigneeId,
-      name: issue.get('assigneeName'),
-      avatarUrl: issue.get('avatarUrl'),
-    }));
-  }, Map());
+    return {
+      ...reduction,
+      [assigneeId]: {
+        id: assigneeId,
+        name: issue.assigneeName,
+        avatarUrl: issue.avatarUrl,
+      },
+    };
+  }, {});
 
-  const pointsByAssignee = issues.reduce((reduction, issue) => {
-    const assigneeId = issue.get('assignee');
-    return reduction.update(assigneeId, (status = Map()) => {
-      const statusCategory = issue.getIn(['status', 'statusCategory', 'key']);
-      return status.update(statusCategory, (d = 0) =>
-        d + (issue.getIn(['estimateStatistic', 'statFieldValue', 'value']) || 0)
-      );
-    });
-  }, Map());
+  const addPointsByCategory = (assigneePoints = {}, statusCategory, pointsToAdd) => {
+    const oldValue = assigneePoints[statusCategory] || 0;
+
+    return {
+      ...assigneePoints,
+      [statusCategory]: oldValue + pointsToAdd,
+    };
+  };
+
+  const pointsByAssignee = issues.reduce((pointsSummary, issue) => {
+    const assigneeId = issue.assignee;
+    const statusCategory = _get(issue, 'status.statusCategory.key');
+    const pointsToAdd = _get(issue, 'estimateStatistic.statFieldValue.value', 0);
+
+    const oldAssigneePoints = pointsSummary[assigneeId];
+    const newAssigneePoints = addPointsByCategory(oldAssigneePoints, statusCategory, pointsToAdd);
+
+    return {
+      ...pointsSummary,
+      [assigneeId]: newAssigneePoints,
+    };
+  }, {});
 
   return { assignees, pointsByAssignee };
 };
@@ -70,13 +87,15 @@ class JiraTaskBoardHelper {
       .withCredentials()
       .then(res => {
         this.fetchTime = new Date();
-        this.issues = fromJS(res.body.issuesData.issues);
 
-        const { assignees, pointsByAssignee } = aggregateIssuesByAssignee(this.issues);
-        this.assignees = assignees;
-        this.pointsByAssignee = pointsByAssignee;
+        const issues = _get(res, 'body.issuesData.issues');
+        if (issues) {
+          const { assignees, pointsByAssignee } = aggregateIssuesByAssignee(issues);
+          this.assignees = assignees;
+          this.pointsByAssignee = pointsByAssignee;
 
-        this.updateView();
+          this.updateView();
+        }
       });
   }
 

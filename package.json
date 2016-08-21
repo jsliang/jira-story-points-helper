@@ -25,7 +25,11 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
-    "immutable": "^3.8.1",
+    "lodash.get": "^4.4.2",
+    "lodash.has": "^4.5.2",
+    "lodash.size": "^4.2.0",
+    "lodash.sortby": "^4.7.0",
+    "lodash.values": "^4.3.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-pure-render": "^1.0.2",

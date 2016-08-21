@@ -1,6 +1,5 @@
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
-import { Map } from 'immutable';
 
 import ReloadButton from './ReloadButton';
 import SummaryTable from './SummaryTable';
@@ -88,10 +87,10 @@ class Popover extends PureComponent {
 }
 
 Popover.defaultProps = {
-  assignees: Map(),
+  assignees: {},
   doFetchData: () => {},
   fetchTime: new Date(),
-  pointsByAssignee: Map(),
+  pointsByAssignee: {},
 };
 
 export default Popover;

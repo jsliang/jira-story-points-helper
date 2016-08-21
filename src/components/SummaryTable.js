@@ -1,6 +1,8 @@
+import _size from 'lodash.size';
+import _sortBy from 'lodash.sortby';
+import _values from 'lodash.values';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
-import { Map } from 'immutable';
 
 import { formatNumber, getTotalPoints } from './util';
 
@@ -10,19 +12,20 @@ class SummaryTable extends PureComponent {
   render() {
     const { assignees, pointsByAssignee } = this.props;
 
-    if (assignees.count() === 0) {
+    if (_size(assignees) === 0) {
       return <p>{chrome.i18n.getMessage('txtErrNoActiveSprint')}</p>;
     }
 
-    const totalStoryPoints = assignees.valueSeq().reduce(
-      (reduction, assignee) =>
-        reduction + getTotalPoints(pointsByAssignee.get(assignee.get('id'))),
+    const totalStoryPoints = _values(assignees).reduce(
+      (reduction, assignee) => reduction + getTotalPoints(pointsByAssignee[assignee.id]),
       0
     );
 
     if (totalStoryPoints === 0) {
       return <p>{chrome.i18n.getMessage('txtErrNoStoryPoints')}</p>;
     }
+
+    const sortedAssignees = _sortBy(_values(assignees), assignee => assignee.name);
 
     return (
       <table style={{ borderCollapse: 'separate' }}>
@@ -42,13 +45,10 @@ class SummaryTable extends PureComponent {
           </tr>
         </thead>
         <tbody>
-        {
-          assignees
-            .valueSeq()
-            .sortBy(assignee => assignee.get('name'))
-            .map(assignee => {
-              const assigneeId = assignee.get('id');
-              const points = pointsByAssignee.get(assigneeId);
+          {
+            sortedAssignees.map(assignee => {
+              const assigneeId = assignee.id;
+              const points = pointsByAssignee[assigneeId];
 
               const totalPoints = getTotalPoints(points);
 
@@ -57,12 +57,12 @@ class SummaryTable extends PureComponent {
                   <tr key={assigneeId}>
                     <td>
                       <img
-                        alt={assignee.get('name')}
+                        alt={assignee.name}
                         className="ghx-avatar-img"
-                        src={assignee.get('avatarUrl')}
+                        src={assignee.avatarUrl}
                       />
                       &nbsp;
-                      <span>{assignee.get('name')}</span>
+                      <span>{assignee.name}</span>
                     </td>
                     <td style={{ padding: '0 6px' }}>
                       <div style={{
@@ -84,8 +84,7 @@ class SummaryTable extends PureComponent {
 
               return null;
             })
-            .toJS()
-        }
+          }
         </tbody>
       </table>
     );
@@ -93,8 +92,8 @@ class SummaryTable extends PureComponent {
 }
 
 SummaryTable.defaultProps = {
-  assignees: Map(),
-  pointsByAssignee: Map(),
+  assignees: {},
+  pointsByAssignee: {},
 };
 
 export default SummaryTable;

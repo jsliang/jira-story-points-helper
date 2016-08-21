@@ -8,8 +8,8 @@ export const formatNumber = n => {
     : `${major}.${minor.replace(/0+$/, '')}`;
 };
 
-export const getTotalPoints = points =>
+export const getTotalPoints = (points = {}) =>
   ALL_STATUS.reduce(
-    (reduction, statusKey) => reduction + (points.get(statusKey) || 0),
+    (reduction, statusKey) => reduction + (points[statusKey] || 0),
     0
   );

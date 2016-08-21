@@ -1,6 +1,5 @@
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
-import { Map } from 'immutable';
 
 import {
   ALL_STATUS,
@@ -27,7 +26,7 @@ class PointsBar extends PureComponent {
       }}>
       {
         ALL_STATUS.map((statusKey) => {
-          const pnt = points.get(statusKey) || 0;
+          const pnt = points[statusKey] || 0;
           const percentage = Math.round((pnt / totalPoints) * 100);
           const partStyle = {
             alignItems: 'center',
@@ -65,7 +64,7 @@ class PointsBar extends PureComponent {
 }
 
 PointsBar.defaultProps = {
-  points: Map(),
+  points: {},
 };
 
 export default PointsBar;
