@@ -6,7 +6,7 @@
   "icons": {
     "128": "icon.png"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-story-points-helper",
   "default_locale": "en",
