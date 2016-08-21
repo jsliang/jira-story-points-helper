@@ -3,6 +3,7 @@ import React from 'react';
 
 import IconLogo from '../icons/IconLogo';
 import IconReload from '../icons/IconReload';
+import { i18n } from './util';
 
 class ReloadButton extends PureComponent {
   constructor() {
@@ -57,7 +58,7 @@ class ReloadButton extends PureComponent {
           transition: 'background-color 0.3s ease-in-out',
           width: '30px',
         }}
-        title={chrome.i18n.getMessage('txtReloadData')}
+        title={i18n('txtReloadData')}
       >
         { showReloadIcon
           ? <IconReload color={hover ? '#fff' : '#205081'} />

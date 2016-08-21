@@ -3,6 +3,7 @@ import React from 'react';
 
 import ReloadButton from './ReloadButton';
 import SummaryTable from './SummaryTable';
+import { i18n } from './util';
 
 const padZero = num => `0${num}`.substr(-2, 2);
 
@@ -73,7 +74,7 @@ class Popover extends PureComponent {
             onClick={doFetchData}
           />
           <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
-            {chrome.i18n.getMessage('txtLastUpdatedTime')}
+            {i18n('txtLastUpdatedTime')}
             {formatDate(fetchTime)}
           </p>
           <SummaryTable

@@ -4,7 +4,7 @@ import _values from 'lodash.values';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
-import { formatNumber, getTotalPoints } from './util';
+import { formatNumber, getTotalPoints, i18n } from './util';
 
 import PointsBar from './PointsBar';
 
@@ -13,7 +13,7 @@ class SummaryTable extends PureComponent {
     const { assignees, pointsByAssignee } = this.props;
 
     if (_size(assignees) === 0) {
-      return <p>{chrome.i18n.getMessage('txtErrNoActiveSprint')}</p>;
+      return <p>{i18n('txtErrNoActiveSprint')}</p>;
     }
 
     const totalStoryPoints = _values(assignees).reduce(
@@ -22,7 +22,7 @@ class SummaryTable extends PureComponent {
     );
 
     if (totalStoryPoints === 0) {
-      return <p>{chrome.i18n.getMessage('txtErrNoStoryPoints')}</p>;
+      return <p>{i18n('txtErrNoStoryPoints')}</p>;
     }
 
     const sortedAssignees = _sortBy(_values(assignees), assignee => assignee.name);
@@ -33,14 +33,14 @@ class SummaryTable extends PureComponent {
           <tr>
             <td></td>
             <td style={{ color: '#707070', padding: '0 6px' }}>
-              {chrome.i18n.getMessage('txtTotal')}
+              {i18n('txtTotal')}
             </td>
             <td style={{ color: '#707070' }}>
-              {chrome.i18n.getMessage('txtNew')}
+              {i18n('txtNew')}
               &nbsp;/&nbsp;
-              {chrome.i18n.getMessage('txtIndeterminate')}
+              {i18n('txtIndeterminate')}
               &nbsp;/&nbsp;
-              {chrome.i18n.getMessage('txtDone')}
+              {i18n('txtDone')}
             </td>
           </tr>
         </thead>

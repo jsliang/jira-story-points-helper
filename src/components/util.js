@@ -13,3 +13,5 @@ export const getTotalPoints = (points = {}) =>
     (reduction, statusKey) => reduction + (points[statusKey] || 0),
     0
   );
+
+export const i18n = msgKey => chrome.i18n.getMessage(msgKey);
