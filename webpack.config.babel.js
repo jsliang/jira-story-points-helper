@@ -15,7 +15,7 @@ const config = {
   plugins: [
     new CopyWebpackPlugin([
       { from: './src/_locales', to: '_locales' },
-      { from: './src/icon.png'},
+      { from: './src/icon.png' },
       { from: './src/manifest.json' },
     ]),
     new webpack.optimize.UglifyJsPlugin({
