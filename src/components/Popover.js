@@ -30,20 +30,14 @@ class Popover extends PureComponent {
     this.showPopover = this.showPopover.bind(this);
     this.hidePopover = this.hidePopover.bind(this);
 
-    this.state = {
-      show: false,
-    };
+    this.state = { show: false };
   }
 
   showPopover() {
-    this.setState({
-      show: true,
-    });
+    this.setState({ show: true });
   }
   hidePopover() {
-    this.setState({
-      show: false,
-    });
+    this.setState({ show: false });
   }
 
   render() {
@@ -53,42 +47,42 @@ class Popover extends PureComponent {
     } = this;
 
     return (
-    <div
-      onMouseEnter={this.showPopover}
-      onMouseLeave={this.hidePopover}
-      style={{
-        backgroundColor: '#fff',
-        borderRadius: '0 5px 0 0',
-        bottom: 0,
-        boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
-        color: '#333',
-        fontSize: '0.8125rem',
-        left: 0,
-        position: 'fixed',
-        transform: show ? undefined : 'translate(-90%, 50%)',
-        transition: 'transform 0.5s ease-in-out',
-        zIndex: 100,
-      }}
-    >
-      <div style={{
-        position: 'relative',
-        padding: '20px',
-      }}>
-        <ReloadButton
-          fetchTime={fetchTime}
-          showReloadIcon={show}
-          onClick={doFetchData}
-        />
-        <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
-          {chrome.i18n.getMessage('txtLastUpdatedTime')}
-          {formatDate(fetchTime)}
-        </p>
-        <SummaryTable
-          assignees={assignees}
-          pointsByAssignee={pointsByAssignee}
-        />
+      <div
+        onMouseEnter={this.showPopover}
+        onMouseLeave={this.hidePopover}
+        style={{
+          backgroundColor: '#fff',
+          borderRadius: '0 5px 0 0',
+          bottom: 0,
+          boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
+          color: '#333',
+          fontSize: '0.8125rem',
+          left: 0,
+          position: 'fixed',
+          transform: show ? undefined : 'translate(-90%, 50%)',
+          transition: 'transform 0.5s ease-in-out',
+          zIndex: 100,
+        }}
+      >
+        <div style={{
+          position: 'relative',
+          padding: '20px',
+        }}>
+          <ReloadButton
+            fetchTime={fetchTime}
+            showReloadIcon={show}
+            onClick={doFetchData}
+          />
+          <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
+            {chrome.i18n.getMessage('txtLastUpdatedTime')}
+            {formatDate(fetchTime)}
+          </p>
+          <SummaryTable
+            assignees={assignees}
+            pointsByAssignee={pointsByAssignee}
+          />
+        </div>
       </div>
-    </div>
     );
   }
 }
