@@ -1,10 +1,27 @@
-import moment from 'moment';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 import { Map } from 'immutable';
 
 import ReloadButton from './ReloadButton';
 import SummaryTable from './SummaryTable';
+
+const padZero = num => `0${num}`.substr(-2, 2);
+
+const formatDate = d => {
+  const date = [
+    d.getFullYear(),
+    padZero(d.getMonth() + 1),
+    padZero(d.getDate()),
+  ].join('-');
+
+  const time = [
+    padZero(d.getHours()),
+    padZero(d.getMinutes()),
+    padZero(d.getSeconds()),
+  ].join(':');
+
+  return `${date} ${time}`;
+};
 
 class Popover extends PureComponent {
   constructor() {
@@ -64,7 +81,7 @@ class Popover extends PureComponent {
         />
         <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
           {chrome.i18n.getMessage('txtLastUpdatedTime')}
-          {moment(fetchTime).format('YYYY/MM/DD HH:mm:ss')}
+          {formatDate(fetchTime)}
         </p>
         <SummaryTable
           assignees={assignees}
