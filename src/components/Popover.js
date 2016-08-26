@@ -1,3 +1,4 @@
+import _get from 'lodash.get';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
@@ -24,13 +25,17 @@ const formatDate = d => {
 };
 
 class Popover extends PureComponent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.showPopover = this.showPopover.bind(this);
     this.hidePopover = this.hidePopover.bind(this);
+    this.toggle = this.toggle.bind(this);
 
-    this.state = { show: false };
+    this.state = {
+      show: false,
+      visibleSprints: new Set([_get(props, 'sprints[0].id')]),
+    };
   }
 
   showPopover() {
@@ -40,10 +45,29 @@ class Popover extends PureComponent {
     this.setState({ show: false });
   }
 
+  toggle(sprintId) {
+    return () => {
+      const { visibleSprints } = this.state;
+
+      const newVisibleSprints = new Set(visibleSprints);
+      if (visibleSprints.has(sprintId)) {
+        newVisibleSprints.delete(sprintId);
+      } else {
+        newVisibleSprints.add(sprintId);
+      }
+
+      if (newVisibleSprints.size > 0) {
+        this.setState({
+          visibleSprints: newVisibleSprints,
+        });
+      }
+    };
+  }
+
   render() {
     const {
       props: { doFetchData, fetchTime, sprints },
-      state: { show },
+      state: { show, visibleSprints },
     } = this;
 
     if (sprints.length === 0) {
@@ -82,11 +106,12 @@ class Popover extends PureComponent {
             {formatDate(fetchTime)}
           </p>
           {
-            sprints.map((sprint, i) =>
+            sprints.map(sprint =>
               <SummaryTable
+                expanded={visibleSprints.has(sprint.id)}
                 key={sprint.id}
-                collapsed={i > 0}
                 sprint={sprint}
+                toggle={this.toggle(sprint.id)}
               />
             )
           }

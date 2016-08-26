@@ -8,29 +8,12 @@ import { formatNumber, getTotalPoints, i18n } from './util';
 import PointsBar from './PointsBar';
 
 class SummaryTable extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.toggle = this.toggle.bind(this);
-
-    this.state = {
-      collapsed: props.collapsed,
-    };
-  }
-
-  toggle() {
-    this.setState({
-      collapsed: !this.state.collapsed,
-    });
-  }
-
   render() {
     const {
-      props: {
-        sprint: { assignees, name, pointsByAssignee },
-      },
-      state: { collapsed },
-    } = this;
+      expanded,
+      sprint: { assignees, name, pointsByAssignee },
+      toggle,
+    } = this.props;
 
     const totalStoryPoints = _values(assignees).reduce(
       (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
@@ -50,17 +33,17 @@ class SummaryTable extends PureComponent {
             <td></td>
             <td
               colSpan={2}
-              onClick={this.toggle}
+              onClick={toggle}
               style={{
-                color: collapsed ? '#707070' : undefined,
+                color: expanded ? undefined : '#707070',
                 cursor: 'pointer',
                 textAlign: 'right',
               }}
             >
-              <strong>{collapsed ? '-' : '+'} {name}</strong>
+              <strong>{expanded ? '+' : '-'} {name}</strong>
             </td>
           </tr>
-        {collapsed ? null : (
+        {expanded ? (
           <tr>
             <td></td>
             <td style={{ color: '#707070', padding: '0 6px', textAlign: 'right', width: '50px' }}>
@@ -74,9 +57,9 @@ class SummaryTable extends PureComponent {
               {i18n('txtDone')}
             </td>
           </tr>
-        )}
+        ) : null}
         </thead>
-      {collapsed ? null : (
+      {expanded ? (
         <tbody>
           {
             sortedAssignees.map(assignee => {
@@ -119,14 +102,14 @@ class SummaryTable extends PureComponent {
             })
           }
         </tbody>
-        )}
+      ) : null}
       </table>
     );
   }
 }
 
 SummaryTable.defaultProps = {
-  collapsed: true,
+  expanded: false,
   sprint: {},
 };
 
