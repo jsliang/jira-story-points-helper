@@ -81,7 +81,9 @@ class Popover extends PureComponent {
             {i18n('txtLastUpdatedTime')}
             {formatDate(fetchTime)}
           </p>
-          <SummaryTable sprint={sprints[0]} />
+          {
+            sprints.map(sprint => <SummaryTable key={sprint.id} sprint={sprint} />)
+          }
         </div>
       </div>
     );

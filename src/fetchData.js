@@ -100,10 +100,10 @@ const fetchData = (callback = () => {}) => () =>
         }, {});
 
         callback(new Date(), sprints.map(sprint => {
-          const { issuesIds, name, state } = sprint;
+          const { id, issuesIds, name } = sprint;
           return {
+            id,
             name,
-            state,
             assignees: assigneesBySprint(issuesIds),
             pointsByAssignee: assigneePointsBySprint(issuesIds),
           };

@@ -3,7 +3,7 @@
     "message": "JIRA Story Points Helper"
   },
   "extDesc": {
-    "message": "Visualizing each assignee's story points in the active or upcoming sprint"
+    "message": "Visualizing each assignee's story points in all sprints"
   },
   "txtLastUpdatedTime": {
     "message": "Last updated time: "

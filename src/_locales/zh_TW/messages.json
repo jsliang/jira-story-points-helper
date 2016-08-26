@@ -3,7 +3,7 @@
     "message": "JIRA 點數小幫手"
   },
   "extDesc": {
-    "message": "圖像化呈現當前或下一個 sprint 每人負責的點數狀況"
+    "message": "圖像化呈現各個 sprint 每人負責的點數狀況"
   },
   "txtLastUpdatedTime": {
     "message": "資料更新時間："

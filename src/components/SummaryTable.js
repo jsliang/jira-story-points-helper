@@ -23,7 +23,7 @@ class SummaryTable extends PureComponent {
     const sortedAssignees = _sortBy(_values(assignees), assignee => assignee.name);
 
     return (
-      <table style={{ borderCollapse: 'separate' }}>
+      <table style={{ borderCollapse: 'separate', width: '100%' }}>
         <thead>
           <tr>
             <td></td>
@@ -31,10 +31,10 @@ class SummaryTable extends PureComponent {
           </tr>
           <tr>
             <td></td>
-            <td style={{ color: '#707070', padding: '0 6px', textAlign: 'right' }}>
+            <td style={{ color: '#707070', padding: '0 6px', textAlign: 'right', width: '50px' }}>
               {i18n('txtTotal')}
             </td>
-            <td style={{ color: '#707070', textAlign: 'right' }}>
+            <td style={{ color: '#707070', textAlign: 'right', width: '170px' }}>
               {i18n('txtNew')}
               &nbsp;/&nbsp;
               {i18n('txtIndeterminate')}
