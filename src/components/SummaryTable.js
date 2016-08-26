@@ -9,7 +9,7 @@ import PointsBar from './PointsBar';
 
 class SummaryTable extends PureComponent {
   render() {
-    const { assignees, pointsByAssignee } = this.props.sprint;
+    const { assignees, name, pointsByAssignee } = this.props.sprint;
 
     const totalStoryPoints = _values(assignees).reduce(
       (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
@@ -17,7 +17,7 @@ class SummaryTable extends PureComponent {
     );
 
     if (totalStoryPoints === 0) {
-      return <p>{i18n('txtErrNoStoryPoints')}</p>;
+      return <p><strong>{name}:</strong> {i18n('txtErrNoStoryPoints')}</p>;
     }
 
     const sortedAssignees = _sortBy(_values(assignees), assignee => assignee.name);
@@ -27,10 +27,14 @@ class SummaryTable extends PureComponent {
         <thead>
           <tr>
             <td></td>
-            <td style={{ color: '#707070', padding: '0 6px' }}>
+            <td colSpan={2} style={{ textAlign: 'right' }}><strong>{name}</strong></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style={{ color: '#707070', padding: '0 6px', textAlign: 'right' }}>
               {i18n('txtTotal')}
             </td>
-            <td style={{ color: '#707070' }}>
+            <td style={{ color: '#707070', textAlign: 'right' }}>
               {i18n('txtNew')}
               &nbsp;/&nbsp;
               {i18n('txtIndeterminate')}
