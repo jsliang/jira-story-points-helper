@@ -27,7 +27,6 @@
   "dependencies": {
     "lodash.get": "^4.4.2",
     "lodash.has": "^4.5.2",
-    "lodash.size": "^4.2.0",
     "lodash.sortby": "^4.7.0",
     "lodash.values": "^4.3.0",
     "react": "^15.3.0",

@@ -1,4 +1,3 @@
-import _size from 'lodash.size';
 import _sortBy from 'lodash.sortby';
 import _values from 'lodash.values';
 import PureComponent from 'react-pure-render/component';
@@ -10,14 +9,10 @@ import PointsBar from './PointsBar';
 
 class SummaryTable extends PureComponent {
   render() {
-    const { assignees, pointsByAssignee } = this.props;
-
-    if (_size(assignees) === 0) {
-      return <p>{i18n('txtErrNoActiveSprint')}</p>;
-    }
+    const { assignees, pointsByAssignee } = this.props.sprint;
 
     const totalStoryPoints = _values(assignees).reduce(
-      (reduction, assignee) => reduction + getTotalPoints(pointsByAssignee[assignee.id]),
+      (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
       0
     );
 
@@ -92,8 +87,7 @@ class SummaryTable extends PureComponent {
 }
 
 SummaryTable.defaultProps = {
-  assignees: {},
-  pointsByAssignee: {},
+  sprint: {},
 };
 
 export default SummaryTable;

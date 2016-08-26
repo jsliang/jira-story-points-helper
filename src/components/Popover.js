@@ -46,7 +46,9 @@ class Popover extends PureComponent {
       state: { show },
     } = this;
 
-    const { assignees, pointsByAssignee } = sprints[0];
+    if (sprints.length === 0) {
+      return <p>{i18n('txtErrNoSprint')}</p>;
+    }
 
     return (
       <div
@@ -79,10 +81,7 @@ class Popover extends PureComponent {
             {i18n('txtLastUpdatedTime')}
             {formatDate(fetchTime)}
           </p>
-          <SummaryTable
-            assignees={assignees}
-            pointsByAssignee={pointsByAssignee}
-          />
+          <SummaryTable sprint={sprints[0]} />
         </div>
       </div>
     );

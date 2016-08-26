@@ -3,7 +3,7 @@
     "message": "JIRA Story Points Helper"
   },
   "extDesc": {
-    "message": "Visualizing each assignee's story points in the active sprint"
+    "message": "Visualizing each assignee's story points in the active or upcoming sprint"
   },
   "txtLastUpdatedTime": {
     "message": "Last updated time: "
@@ -11,8 +11,8 @@
   "txtReloadData": {
     "message": "Reload data"
   },
-  "txtErrNoActiveSprint": {
-    "message": "No active sprint."
+  "txtErrNoSprint": {
+    "message": "No sprints available."
   },
   "txtErrNoStoryPoints": {
     "message": "No story points."
