@@ -6,6 +6,7 @@ import React from 'react';
 import { formatNumber, getTotalPoints, i18n } from './util';
 
 import PointsBar from './PointsBar';
+import SprintToggle from './SprintToggle';
 
 class SummaryTable extends PureComponent {
   render() {
@@ -34,13 +35,9 @@ class SummaryTable extends PureComponent {
             <td
               colSpan={2}
               onClick={toggle}
-              style={{
-                color: expanded ? undefined : '#707070',
-                cursor: 'pointer',
-                textAlign: 'right',
-              }}
+              style={{ textAlign: 'right' }}
             >
-              <strong>{expanded ? '+' : '-'} {name}</strong>
+              <SprintToggle expanded={expanded} name={name} />
             </td>
           </tr>
         {expanded ? (
