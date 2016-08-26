@@ -32,6 +32,8 @@ class Popover extends PureComponent {
     this.hidePopover = this.hidePopover.bind(this);
     this.toggle = this.toggle.bind(this);
 
+    this.hideTimer = null;
+
     this.state = {
       show: false,
       visibleSprints: new Set([_get(props, 'sprints[0].id')]),
@@ -39,10 +41,14 @@ class Popover extends PureComponent {
   }
 
   showPopover() {
+    window.clearTimeout(this.hideTimer);
     this.setState({ show: true });
   }
   hidePopover() {
-    this.setState({ show: false });
+    window.clearTimeout(this.hideTimer);
+    this.hideTimer = window.setTimeout(() => {
+      this.setState({ show: false });
+    }, 1000);
   }
 
   toggle(sprintId) {
