@@ -14,59 +14,21 @@ const getRapidViewId = url => {
   return null;
 };
 
-const aggregateIssuesByAssignee = issues => {
-  const assignees = issues.reduce((reduction, issue) => {
-    const assigneeId = issue.assignee;
-    if (!assigneeId) {
-      return reduction;
-    }
+const addPointsByCategory = (assigneePoints = {}, statusCategory, pointsToAdd) => {
+  const oldValue = assigneePoints[statusCategory] || 0;
 
-    if (_has(reduction, assigneeId)) {
-      return reduction;
-    }
-
-    return {
-      ...reduction,
-      [assigneeId]: {
-        id: assigneeId,
-        name: issue.assigneeName,
-        avatarUrl: issue.avatarUrl,
-      },
-    };
-  }, {});
-
-  const addPointsByCategory = (assigneePoints = {}, statusCategory, pointsToAdd) => {
-    const oldValue = assigneePoints[statusCategory] || 0;
-
-    return {
-      ...assigneePoints,
-      [statusCategory]: oldValue + pointsToAdd,
-    };
+  return {
+    ...assigneePoints,
+    [statusCategory]: oldValue + pointsToAdd,
   };
-
-  const pointsByAssignee = issues.reduce((pointsSummary, issue) => {
-    const assigneeId = issue.assignee;
-    const statusCategory = _get(issue, 'status.statusCategory.key');
-    const pointsToAdd = _get(issue, 'estimateStatistic.statFieldValue.value', 0);
-
-    const oldAssigneePoints = pointsSummary[assigneeId];
-    const newAssigneePoints = addPointsByCategory(oldAssigneePoints, statusCategory, pointsToAdd);
-
-    return {
-      ...pointsSummary,
-      [assigneeId]: newAssigneePoints,
-    };
-  }, {});
-
-  return { assignees, pointsByAssignee };
 };
 
 const reqUrlForAllData = () => {
   const accountId = getAccountId(window.location.host || window.location.hostname);
   const rapidViewId = getRapidViewId(window.location.search);
 
-  return `https://${accountId}.atlassian.net/rest/greenhopper/1.0/xboard/work`
-    + `/allData.json?rapidViewId=${rapidViewId}`;
+  return `https://${accountId}.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog`
+    + `/data.json?rapidViewId=${rapidViewId}`;
 };
 
 const fetchData = (callback = () => {}) => () =>
@@ -74,11 +36,78 @@ const fetchData = (callback = () => {}) => () =>
     .get(reqUrlForAllData())
     .withCredentials()
     .then(res => {
-      const issues = _get(res, 'body.issuesData.issues');
+      const issues = _get(res, 'body.issues', []);
+      const sprints = _get(res, 'body.sprints', []);
 
-      if (issues) {
-        const { assignees, pointsByAssignee } = aggregateIssuesByAssignee(issues);
-        callback(new Date(), assignees, pointsByAssignee);
+      if (sprints.length) {
+        const assignees = issues.reduce((prev, issue) => {
+          const assigneeId = issue.assignee;
+          if (!assigneeId) {
+            return prev;
+          }
+
+          if (_has(prev, assigneeId)) {
+            return prev;
+          }
+
+          return {
+            ...prev,
+            [assigneeId]: {
+              id: assigneeId,
+              name: issue.assigneeName,
+              avatarUrl: issue.avatarUrl,
+            },
+          };
+        }, {});
+
+        const issuesById = issues.reduce((prev, issue) => ({
+          ...prev,
+          [issue.id]: {
+            assigneeId: issue.assignee,
+            points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
+            statusCategory: _get(issue, 'status.statusCategory.key'),
+          },
+        }), {});
+
+        const assigneesBySprint = issuesIds => issuesIds.reduce((prev, issueId) => {
+          const { assigneeId, points = 0, statusCategory } = issuesById[issueId];
+          if (!assigneeId || !points || !statusCategory) return prev;
+
+          return {
+            ...prev,
+            [assigneeId]: assignees[assigneeId],
+          };
+        }, {});
+
+        const assigneePointsBySprint = issuesIds => issuesIds.reduce((prev, issueId) => {
+          const issue = issuesById[issueId];
+          if (!issue) return prev;
+
+          const { assigneeId, points = 0, statusCategory } = issue;
+          if (!points || !assigneeId || !statusCategory) return prev;
+
+          const oldAssigneePoints = prev[assigneeId];
+          const newAssigneePoints = addPointsByCategory(
+            oldAssigneePoints,
+            statusCategory,
+            points
+          );
+
+          return {
+            ...prev,
+            [issue.assigneeId]: newAssigneePoints,
+          };
+        }, {});
+
+        callback(new Date(), sprints.map(sprint => {
+          const { issuesIds, name, state } = sprint;
+          return {
+            name,
+            state,
+            assignees: assigneesBySprint(issuesIds),
+            pointsByAssignee: assigneePointsBySprint(issuesIds),
+          };
+        }));
       }
     });
 

@@ -23,13 +23,12 @@ const CONTAINER_ID = 'jira-taskboard-helper';
 
 
 // fetch data and render the result in container
-fetchData(function updateView(fetchTime, assignees, pointsByAssignee) {
+fetchData(function updateView(fetchTime, sprints) {
   render(
     <Popover
-      assignees={assignees}
       doFetchData={fetchData(updateView)}
       fetchTime={fetchTime}
-      pointsByAssignee={pointsByAssignee}
+      sprints={sprints}
     />,
     document.getElementById(CONTAINER_ID)
   );

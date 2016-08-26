@@ -42,9 +42,11 @@ class Popover extends PureComponent {
 
   render() {
     const {
-      props: { assignees, doFetchData, fetchTime, pointsByAssignee },
+      props: { doFetchData, fetchTime, sprints },
       state: { show },
     } = this;
+
+    const { assignees, pointsByAssignee } = sprints[0];
 
     return (
       <div
@@ -88,10 +90,9 @@ class Popover extends PureComponent {
 }
 
 Popover.defaultProps = {
-  assignees: {},
   doFetchData: () => {},
   fetchTime: new Date(),
-  pointsByAssignee: {},
+  sprints: {},
 };
 
 export default Popover;
