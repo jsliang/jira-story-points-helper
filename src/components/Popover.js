@@ -3,7 +3,7 @@ import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
 import ReloadButton from './ReloadButton';
-import SummaryTable from './SummaryTable';
+import SprintTable from './SprintTable';
 import { i18n } from './util';
 
 const padZero = num => `0${num}`.substr(-2, 2);
@@ -107,7 +107,7 @@ class Popover extends PureComponent {
           </p>
           {
             sprints.map(sprint =>
-              <SummaryTable
+              <SprintTable
                 expanded={visibleSprints.has(sprint.id)}
                 key={sprint.id}
                 sprint={sprint}

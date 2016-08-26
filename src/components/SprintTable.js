@@ -8,7 +8,7 @@ import { formatNumber, getTotalPoints, i18n } from './util';
 import PointsBar from './PointsBar';
 import SprintToggle from './SprintToggle';
 
-class SummaryTable extends PureComponent {
+class SprintTable extends PureComponent {
   render() {
     const {
       expanded,
@@ -105,9 +105,9 @@ class SummaryTable extends PureComponent {
   }
 }
 
-SummaryTable.defaultProps = {
+SprintTable.defaultProps = {
   expanded: false,
   sprint: {},
 };
 
-export default SummaryTable;
+export default SprintTable;
