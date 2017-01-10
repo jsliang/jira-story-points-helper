@@ -7,7 +7,7 @@ Chrome Web Store: https://chrome.google.com/webstore/detail/ldnpljmdajcdedkbohff
 ### Setup & Compile
 
 ```
-$ npm install
+$ yarn
 $ npm start
 ```
 
