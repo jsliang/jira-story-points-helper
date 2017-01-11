@@ -31,13 +31,48 @@ const reqUrlForAllData = () => {
     + `/data.json?rapidViewId=${rapidViewId}`;
 };
 
-const fetchData = (callback = () => {}) => () =>
+const fetchAllDataPromise =
   request
     .get(reqUrlForAllData())
-    .withCredentials()
-    .then((res) => {
-      const issues = _get(res, 'body.issues', []);
-      const sprints = _get(res, 'body.sprints', []);
+    .withCredentials();
+
+const reqUrlForEditModel = () => {
+  const accountId = getAccountId(window.location.host || window.location.hostname);
+  const rapidViewId = getRapidViewId(window.location.search);
+
+  return `https://${accountId}.atlassian.net/rest/greenhopper/1.0/rapidviewconfig/`
+    + `editmodel.json?rapidViewId=${rapidViewId}`;
+};
+
+const fetchEditModelPromise =
+  request
+    .get(reqUrlForEditModel())
+    .withCredentials();
+
+const getStatusCategoryMap = (editModelResponse) => {
+  const mappedColumns = _get(editModelResponse, 'rapidListConfig.mappedColumns', []);
+
+  const map = {};
+  mappedColumns.forEach((column) => {
+    const mappedStatuses = _get(column, 'mappedStatuses', []);
+    mappedStatuses.forEach((status) => {
+      const statusId = status.id;
+      const statusCategory = _get(status, 'statusCategory.key', '');
+      if (statusId && statusCategory) {
+        map[statusId] = statusCategory;
+      }
+    });
+  });
+
+  return map;
+};
+
+const fetchData = (callback = () => {}) => () =>
+  Promise.all([fetchAllDataPromise, fetchEditModelPromise])
+    .then((responses) => {
+      const issues = _get(responses, '[0].body.issues', []);
+      const sprints = _get(responses, '[0].body.sprints', []);
+      const statusCategoryMap = getStatusCategoryMap(_get(responses, '[1].body', []));
 
       if (sprints.length) {
         const assignees = issues.reduce((prev, issue) => {
@@ -65,7 +100,7 @@ const fetchData = (callback = () => {}) => () =>
           [issue.id]: {
             assigneeId: issue.assignee,
             points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
-            statusCategory: _get(issue, 'status.statusCategory.key'),
+            statusCategory: statusCategoryMap[issue.statusId],
           },
         }), {});
 
