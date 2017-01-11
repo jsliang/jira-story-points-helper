@@ -5,7 +5,7 @@ import request from 'superagent';
 const getAccountId = host =>
   host.replace('.atlassian.net', '').trim();
 
-const getRapidViewId = url => {
+const getRapidViewId = (url) => {
   const re = /rapidView=(\d+)/;
   const m = re.exec(url);
   if (m) {
@@ -35,7 +35,7 @@ const fetchData = (callback = () => {}) => () =>
   request
     .get(reqUrlForAllData())
     .withCredentials()
-    .then(res => {
+    .then((res) => {
       const issues = _get(res, 'body.issues', []);
       const sprints = _get(res, 'body.sprints', []);
 
@@ -90,7 +90,7 @@ const fetchData = (callback = () => {}) => () =>
           const newAssigneePoints = addPointsByCategory(
             oldAssigneePoints,
             statusCategory,
-            points
+            points,
           );
 
           return {
@@ -99,7 +99,7 @@ const fetchData = (callback = () => {}) => () =>
           };
         }, {});
 
-        callback(new Date(), sprints.map(sprint => {
+        callback(new Date(), sprints.map((sprint) => {
           const { id, issuesIds, name } = sprint;
           return {
             id,
