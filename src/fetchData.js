@@ -26,32 +26,6 @@ const addPointsByCategory = (
   };
 };
 
-const reqUrlForAllData = () => {
-  const accountId = getAccountId(
-    window.location.host || window.location.hostname,
-  );
-  const rapidViewId = getRapidViewId(window.location.search);
-
-  return `https://${accountId}.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog` +
-    `/data.json?rapidViewId=${rapidViewId}`;
-};
-
-const fetchAllDataPromise = request.get(reqUrlForAllData()).withCredentials();
-
-const reqUrlForEditModel = () => {
-  const accountId = getAccountId(
-    window.location.host || window.location.hostname,
-  );
-  const rapidViewId = getRapidViewId(window.location.search);
-
-  return `https://${accountId}.atlassian.net/rest/greenhopper/1.0/rapidviewconfig/` +
-    `editmodel.json?rapidViewId=${rapidViewId}`;
-};
-
-const fetchEditModelPromise = request
-  .get(reqUrlForEditModel())
-  .withCredentials();
-
 const getStatusCategoryMap = editModelResponse => {
   const mappedColumns = _get(
     editModelResponse,
@@ -74,101 +48,113 @@ const getStatusCategoryMap = editModelResponse => {
   return map;
 };
 
-const fetchData = (callback = () => {}) => () => Promise.all([
-  fetchAllDataPromise,
-  fetchEditModelPromise,
-]).then(responses => {
-  const issues = _get(responses, '[0].body.issues', []);
-  const sprints = _get(responses, '[0].body.sprints', []);
-  const statusCategoryMap = getStatusCategoryMap(
-    _get(responses, '[1].body', []),
-  );
+const fetchData = (callback = () => {}) => () => {
+  const { location = {} } = window;
+  const accountId = getAccountId(location.host || location.hostname);
+  const rapidViewId = getRapidViewId(location.search);
 
-  if (sprints.length) {
-    const assignees = issues.reduce(
-      (prev, issue) => {
-        const assigneeId = issue.assignee;
-        if (!assigneeId) {
-          return prev;
-        }
+  const urls = [
+    `https://${accountId}.atlassian.net/rest/greenhopper/1.0/xboard/plan/backlog/data.json?rapidViewId=${rapidViewId}`,
+    `https://${accountId}.atlassian.net/rest/greenhopper/1.0/rapidviewconfig/editmodel.json?rapidViewId=${rapidViewId}`,
+  ];
 
-        if (_has(prev, assigneeId)) {
-          return prev;
-        }
-
-        return {
-          ...prev,
-          [assigneeId]: {
-            id: assigneeId,
-            name: issue.assigneeName,
-            avatarUrl: issue.avatarUrl,
-          },
-        };
-      },
-      {},
+  return Promise.all(
+    urls.map(url => request.get(url).withCredentials()),
+  ).then(responses => {
+    const issues = _get(responses, '[0].body.issues', []);
+    const sprints = _get(responses, '[0].body.sprints', []);
+    const statusCategoryMap = getStatusCategoryMap(
+      _get(responses, '[1].body', []),
     );
 
-    const issuesById = issues.reduce(
-      (prev, issue) => ({
-        ...prev,
-        [issue.id]: {
-          assigneeId: issue.assignee,
-          points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
-          statusCategory: statusCategoryMap[issue.statusId],
+    if (sprints.length) {
+      const assignees = issues.reduce(
+        (prev, issue) => {
+          const assigneeId = issue.assignee;
+          if (!assigneeId) {
+            return prev;
+          }
+
+          if (_has(prev, assigneeId)) {
+            return prev;
+          }
+
+          return {
+            ...prev,
+            [assigneeId]: {
+              id: assigneeId,
+              name: issue.assigneeName,
+              avatarUrl: issue.avatarUrl,
+            },
+          };
         },
-      }),
-      {},
-    );
+        {},
+      );
 
-    const assigneesBySprint = issuesIds => issuesIds.reduce(
-      (prev, issueId) => {
-        const { assigneeId, points = 0, statusCategory } = issuesById[issueId];
-        if (!assigneeId || !points || !statusCategory) return prev;
-
-        return {
+      const issuesById = issues.reduce(
+        (prev, issue) => ({
           ...prev,
-          [assigneeId]: assignees[assigneeId],
-        };
-      },
-      {},
-    );
+          [issue.id]: {
+            assigneeId: issue.assignee,
+            points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
+            statusCategory: statusCategoryMap[issue.statusId],
+          },
+        }),
+        {},
+      );
 
-    const assigneePointsBySprint = issuesIds => issuesIds.reduce(
-      (prev, issueId) => {
-        const issue = issuesById[issueId];
-        if (!issue) return prev;
+      const assigneesBySprint = issuesIds => issuesIds.reduce(
+        (prev, issueId) => {
+          const { assigneeId, points = 0, statusCategory } = issuesById[
+            issueId
+          ];
+          if (!assigneeId || !points || !statusCategory) return prev;
 
-        const { assigneeId, points = 0, statusCategory } = issue;
-        if (!points || !assigneeId || !statusCategory) return prev;
+          return {
+            ...prev,
+            [assigneeId]: assignees[assigneeId],
+          };
+        },
+        {},
+      );
 
-        const oldAssigneePoints = prev[assigneeId];
-        const newAssigneePoints = addPointsByCategory(
-          oldAssigneePoints,
-          statusCategory,
-          points,
-        );
+      const assigneePointsBySprint = issuesIds => issuesIds.reduce(
+        (prev, issueId) => {
+          const issue = issuesById[issueId];
+          if (!issue) return prev;
 
-        return {
-          ...prev,
-          [issue.assigneeId]: newAssigneePoints,
-        };
-      },
-      {},
-    );
+          const { assigneeId, points = 0, statusCategory } = issue;
+          if (!points || !assigneeId || !statusCategory) return prev;
 
-    callback(
-      new Date(),
-      sprints.map(sprint => {
-        const { id, issuesIds, name } = sprint;
-        return {
-          id,
-          name,
-          assignees: assigneesBySprint(issuesIds),
-          pointsByAssignee: assigneePointsBySprint(issuesIds),
-        };
-      }),
-    );
-  }
-});
+          const oldAssigneePoints = prev[assigneeId];
+          const newAssigneePoints = addPointsByCategory(
+            oldAssigneePoints,
+            statusCategory,
+            points,
+          );
+
+          return {
+            ...prev,
+            [issue.assigneeId]: newAssigneePoints,
+          };
+        },
+        {},
+      );
+
+      callback(
+        new Date(),
+        sprints.map(sprint => {
+          const { id, issuesIds, name } = sprint;
+          return {
+            id,
+            name,
+            assignees: assigneesBySprint(issuesIds),
+            pointsByAssignee: assigneePointsBySprint(issuesIds),
+          };
+        }),
+      );
+    }
+  });
+};
 
 export default fetchData;
