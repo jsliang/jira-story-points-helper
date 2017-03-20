@@ -6,7 +6,7 @@ const IS_PRODUCTION = NODE_ENV === 'production';
 
 const config = {
   entry: {
-    index: ['babel-polyfill', './src/index.js'],
+    index: ['./src/index.js'],
   },
   output: {
     path: IS_PRODUCTION ? './dist' : './build',
@@ -21,43 +21,51 @@ const config = {
     new webpack.optimize.UglifyJsPlugin({
       beautify: !IS_PRODUCTION,
       comments: !IS_PRODUCTION,
-      compress: IS_PRODUCTION
-        ? { warnings: false }
-        : false,
+      compress: IS_PRODUCTION ? { warnings: false } : false,
       mangle: IS_PRODUCTION,
       sourceMap: !IS_PRODUCTION,
     }),
+    new webpack.LoaderOptionsPlugin({
+      debug: !IS_PRODUCTION,
+    }),
   ],
-  debug: !IS_PRODUCTION,
   devtool: IS_PRODUCTION ? 'cheap-source-map' : 'eval',
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules|build|dist/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015'],
-        },
+        use: [
+          {
+            loader: 'babel-loader',
+            query: {
+              cacheDirectory: true,
+              cacheIdentifier: true,
+            },
+          },
+        ],
       },
       {
         test: /\.png$/,
-        loader: 'url-loader',
-        query: {
-          limit: 10000,
-          mimetype: 'image/png',
-        },
+        use: [
+          {
+            loader: 'url-loader',
+            query: {
+              limit: 10000,
+              mimetype: 'image/png',
+            },
+          },
+        ],
       },
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
-    modulesDirectories: ['src', 'node_modules'],
+    extensions: ['.js', '.jsx'],
+    modules: ['src', 'node_modules'],
   },
 };
 
 if (IS_PRODUCTION) {
-  config.plugins.push(new webpack.optimize.OccurenceOrderPlugin());
   config.plugins.push(new webpack.optimize.DedupePlugin());
 }
 
