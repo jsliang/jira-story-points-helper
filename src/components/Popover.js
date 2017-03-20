@@ -24,13 +24,15 @@ const formatDate = d => {
   return `${date} ${time}`;
 };
 
-class Popover extends PureComponent {
+export default class Popover extends PureComponent {
+  static defaultProps = {
+    doFetchData: () => {},
+    fetchTime: new Date(),
+    sprints: {},
+  };
+
   constructor(props) {
     super(props);
-
-    this.showPopover = this.showPopover.bind(this);
-    this.hidePopover = this.hidePopover.bind(this);
-    this.toggle = this.toggle.bind(this);
 
     this.hideTimer = null;
 
@@ -40,35 +42,36 @@ class Popover extends PureComponent {
     };
   }
 
-  showPopover() {
+  showPopover = () => {
     window.clearTimeout(this.hideTimer);
     this.setState({ show: true });
-  }
-  hidePopover() {
+  };
+  hidePopover = () => {
     window.clearTimeout(this.hideTimer);
-    this.hideTimer = window.setTimeout(() => {
-      this.setState({ show: false });
-    }, 1000);
-  }
+    this.hideTimer = window.setTimeout(
+      () => {
+        this.setState({ show: false });
+      },
+      1000,
+    );
+  };
 
-  toggle(sprintId) {
-    return () => {
-      const { visibleSprints } = this.state;
+  toggle = sprintId => () => {
+    const { visibleSprints } = this.state;
 
-      const newVisibleSprints = new Set(visibleSprints);
-      if (visibleSprints.has(sprintId)) {
-        newVisibleSprints.delete(sprintId);
-      } else {
-        newVisibleSprints.add(sprintId);
-      }
+    const newVisibleSprints = new Set(visibleSprints);
+    if (visibleSprints.has(sprintId)) {
+      newVisibleSprints.delete(sprintId);
+    } else {
+      newVisibleSprints.add(sprintId);
+    }
 
-      if (newVisibleSprints.size > 0) {
-        this.setState({
-          visibleSprints: newVisibleSprints,
-        });
-      }
-    };
-  }
+    if (newVisibleSprints.size > 0) {
+      this.setState({
+        visibleSprints: newVisibleSprints,
+      });
+    }
+  };
 
   render() {
     const {
@@ -98,39 +101,33 @@ class Popover extends PureComponent {
           zIndex: 100,
         }}
       >
-        <div style={{
-          position: 'relative',
-          padding: '20px',
-        }}>
+        <div
+          style={{
+            position: 'relative',
+            padding: '20px',
+          }}
+        >
           <ReloadButton
             fetchTime={fetchTime}
             showReloadIcon={show}
             onClick={doFetchData}
           />
-          <p style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}>
+          <p
+            style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}
+          >
             {i18n('txtLastUpdatedTime')}
             {formatDate(fetchTime)}
           </p>
-          {
-            sprints.map(sprint =>
-              <SprintTable
-                expanded={visibleSprints.has(sprint.id)}
-                key={sprint.id}
-                sprint={sprint}
-                toggle={this.toggle(sprint.id)}
-              />
-            )
-          }
+          {sprints.map(sprint => (
+            <SprintTable
+              expanded={visibleSprints.has(sprint.id)}
+              key={sprint.id}
+              sprint={sprint}
+              toggle={this.toggle(sprint.id)}
+            />
+          ))}
         </div>
       </div>
     );
   }
 }
-
-Popover.defaultProps = {
-  doFetchData: () => {},
-  fetchTime: new Date(),
-  sprints: {},
-};
-
-export default Popover;

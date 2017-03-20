@@ -1,7 +1,12 @@
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
-class IconReload extends PureComponent {
+export default class IconReload extends PureComponent {
+  static defaultProps = {
+    height: 14,
+    width: 14,
+  };
+
   render() {
     const { color, height, width } = this.props;
     return (
@@ -14,10 +19,3 @@ class IconReload extends PureComponent {
     );
   }
 }
-
-IconReload.defaultProps = {
-  height: 14,
-  width: 14,
-};
-
-export default IconReload;

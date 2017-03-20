@@ -6,7 +6,6 @@ import Popover from './components/Popover';
 
 const CONTAINER_ID = 'jira-taskboard-helper';
 
-
 // append container to body
 (() => {
   const setElementId = (el, id) => {
@@ -21,7 +20,6 @@ const CONTAINER_ID = 'jira-taskboard-helper';
   document.body.appendChild(div);
 })();
 
-
 // fetch data and render the result in container
 fetchData(function updateView(fetchTime, sprints) {
   render(
@@ -30,6 +28,6 @@ fetchData(function updateView(fetchTime, sprints) {
       fetchTime={fetchTime}
       sprints={sprints}
     />,
-    document.getElementById(CONTAINER_ID)
+    document.getElementById(CONTAINER_ID),
   );
 })();

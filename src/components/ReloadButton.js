@@ -5,28 +5,24 @@ import IconLogo from '../icons/IconLogo';
 import IconReload from '../icons/IconReload';
 import { i18n } from './util';
 
-class ReloadButton extends PureComponent {
+export default class ReloadButton extends PureComponent {
+  static defaultProps = {
+    onClick: () => {},
+    showReloadIcon: false,
+  };
+
   constructor() {
     super();
 
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseOut = this.onMouseOut.bind(this);
-
-    this.state = {
-      hover: false,
-    };
+    this.state = { hover: false };
   }
 
-  onMouseEnter() {
-    this.setState({
-      hover: true,
-    });
-  }
-  onMouseOut() {
-    this.setState({
-      hover: false,
-    });
-  }
+  onMouseEnter = () => {
+    this.setState({ hover: true });
+  };
+  onMouseOut = () => {
+    this.setState({ hover: false });
+  };
 
   render() {
     const {
@@ -41,7 +37,7 @@ class ReloadButton extends PureComponent {
         onMouseLeave={this.onMouseOut}
         style={{
           alignItems: 'center',
-          backgroundColor: (showReloadIcon && hover) ? '#3b7fc4' : '#fff',
+          backgroundColor: showReloadIcon && hover ? '#3b7fc4' : '#fff',
           borderRadius: '0 5px 0 20px',
           color: '#fff',
           cursor: showReloadIcon ? 'pointer' : 'default',
@@ -60,17 +56,10 @@ class ReloadButton extends PureComponent {
         }}
         title={i18n('txtReloadData')}
       >
-        { showReloadIcon
+        {showReloadIcon
           ? <IconReload color={hover ? '#fff' : '#205081'} />
-          : <IconLogo /> }
+          : <IconLogo />}
       </div>
     );
   }
 }
-
-ReloadButton.defaultProps = {
-  onClick: () => {},
-  showReloadIcon: false,
-};
-
-export default ReloadButton;

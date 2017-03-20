@@ -10,24 +10,29 @@ import {
 } from './constants';
 import { formatNumber, getTotalPoints } from './util';
 
-class PointsBar extends PureComponent {
+export default class PointsBar extends PureComponent {
+  static defaultProps = {
+    points: {},
+  };
+
   render() {
     const { points } = this.props;
 
     const totalPoints = getTotalPoints(points);
 
     return (
-      <div style={{
-        alignItems: 'stretch',
-        boxSizing: 'border-box',
-        display: 'flex',
-        height: '100%',
-        width: '100%',
-      }}>
-      {
-        ALL_STATUS.map((statusKey) => {
+      <div
+        style={{
+          alignItems: 'stretch',
+          boxSizing: 'border-box',
+          display: 'flex',
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        {ALL_STATUS.map(statusKey => {
           const pnt = points[statusKey] || 0;
-          const percentage = Math.round((pnt / totalPoints) * 100);
+          const percentage = Math.round(pnt / totalPoints * 100);
           const partStyle = {
             alignItems: 'center',
             backgroundColor: STATUS_BG_COLOR[statusKey],
@@ -48,23 +53,13 @@ class PointsBar extends PureComponent {
             <div
               key={statusKey}
               style={partStyle}
-              title={
-                `${STATUS_TEXT[statusKey]}: ${pntStr}`
-                + ` (${percentage}%)`
-              }
+              title={`${STATUS_TEXT[statusKey]}: ${pntStr} (${percentage}%)`}
             >
               {pntStr}
             </div>
           );
-        })
-      }
+        })}
       </div>
     );
   }
 }
-
-PointsBar.defaultProps = {
-  points: {},
-};
-
-export default PointsBar;

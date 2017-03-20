@@ -1,22 +1,24 @@
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
 
-class SprintToggle extends PureComponent {
+export default class SprintToggle extends PureComponent {
+  static defaultProps = {
+    expanded: false,
+    name: '',
+  };
+
   constructor(props) {
     super(props);
-
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
 
     this.state = { hover: false };
   }
 
-  onMouseEnter() {
+  onMouseEnter = () => {
     this.setState({ hover: true });
-  }
-  onMouseLeave() {
+  };
+  onMouseLeave = () => {
     this.setState({ hover: false });
-  }
+  };
 
   render() {
     const {
@@ -40,10 +42,3 @@ class SprintToggle extends PureComponent {
     );
   }
 }
-
-SprintToggle.defaultProps = {
-  expanded: false,
-  name: '',
-};
-
-export default SprintToggle;

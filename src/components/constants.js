@@ -26,8 +26,4 @@ export const STATUS_TEXT = {
   [STATUS_DONE]: chrome.i18n.getMessage('txtDone'),
 };
 
-export const ALL_STATUS = [
-  STATUS_NEW,
-  STATUS_INDETERMINATE,
-  STATUS_DONE,
-];
+export const ALL_STATUS = [STATUS_NEW, STATUS_INDETERMINATE, STATUS_DONE];
