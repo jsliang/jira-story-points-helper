@@ -98,7 +98,7 @@ export default class Popover extends PureComponent {
           position: 'fixed',
           transform: show ? undefined : 'translate(-90%, 50%)',
           transition: 'transform 0.5s ease-in-out',
-          zIndex: 100,
+          zIndex: 300,
         }}
       >
         <div
