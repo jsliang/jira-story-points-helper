@@ -7,6 +7,7 @@ import {
   getIssuesById,
   getAssigneesBySprint,
   getAssigneePointsBySprint,
+  getSprints,
 } from './fetchData';
 
 test('getAccountId: "test.atlassian.net" => "test"', () => {
@@ -307,4 +308,103 @@ test('getAssigneePointsBySprint', () => {
     'danny.lin': { indeterminate: 0.5 },
     'jenny.liang': { done: 2.5, indeterminate: 1 },
   });
+});
+
+test('getSprints', () => {
+  expect(
+    getSprints(
+      [
+        {
+          id: 119305,
+          assignee: 'danny.lin',
+          assigneeName: 'Danny Lin',
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          estimateStatistic: { statFieldValue: { value: 0 } },
+          statusId: '10201',
+        },
+        {
+          id: 119306,
+          assignee: 'jenny.liang',
+          assigneeName: 'Jenny Liang',
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          estimateStatistic: { statFieldValue: { value: 1 } },
+          statusId: '10300',
+        },
+        {
+          id: 112849,
+          assignee: 'danny.lin',
+          assigneeName: 'Danny Lin',
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          estimateStatistic: { statFieldValue: { value: 0.5 } },
+          statusId: '10300',
+        },
+        {
+          id: 91692,
+          assignee: 'danny.lin',
+          assigneeName: 'Danny Lin',
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          statusId: '10200',
+        },
+        {
+          id: 113104,
+          assignee: 'jenny.liang',
+          assigneeName: 'Jenny Liang',
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          estimateStatistic: { statFieldValue: { value: 2.5 } },
+          statusId: '5',
+        },
+      ],
+      [
+        {
+          id: 123,
+          name: '20180426-20180511',
+          issuesIds: [119305, 119306, 112849],
+        },
+        {
+          id: 456,
+          name: '20180512-20180525',
+          issuesIds: [91692, 113104],
+        },
+      ],
+      {
+        '5': 'done',
+        '10200': 'new',
+        '10201': 'done',
+        '10300': 'indeterminate',
+      }
+    )
+  ).toEqual([
+    {
+      id: 123,
+      name: '20180426-20180511',
+      assignees: {
+        'danny.lin': {
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          id: 'danny.lin',
+          name: 'Danny Lin',
+        },
+        'jenny.liang': {
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          id: 'jenny.liang',
+          name: 'Jenny Liang',
+        },
+      },
+      pointsByAssignee: {
+        'danny.lin': { indeterminate: 0.5 },
+        'jenny.liang': { indeterminate: 1 },
+      },
+    },
+    {
+      id: 456,
+      name: '20180512-20180525',
+      assignees: {
+        'jenny.liang': {
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          id: 'jenny.liang',
+          name: 'Jenny Liang',
+        },
+      },
+      pointsByAssignee: { 'jenny.liang': { done: 2.5 } },
+    },
+  ]);
 });
