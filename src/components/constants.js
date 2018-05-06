@@ -1,6 +1,6 @@
-const STATUS_NEW = 'new';
-const STATUS_INDETERMINATE = 'indeterminate';
-const STATUS_DONE = 'done';
+export const STATUS_NEW = 'new';
+export const STATUS_INDETERMINATE = 'indeterminate';
+export const STATUS_DONE = 'done';
 
 export const STATUS_BG_COLOR = {
   [STATUS_NEW]: '#4a6785',
