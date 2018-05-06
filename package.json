@@ -3,6 +3,7 @@
   "version": "0.4.2",
   "scripts": {
     "start": "rm -rf build/ && webpack --watch --config ./webpack.config.babel.js",
+    "test": "jest",
     "dist": "rm -rf dist/ && NODE_ENV=production webpack --config ./webpack.config.babel.js"
   },
   "devDependencies": {
@@ -14,6 +15,7 @@
     "babel-preset-stage-0": "^6.22.0",
     "copy-webpack-plugin": "^4.0.1",
     "file-loader": "^0.10.1",
+    "jest": "^22.4.3",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1"
   },
