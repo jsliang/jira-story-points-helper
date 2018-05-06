@@ -4,7 +4,7 @@
   "scripts": {
     "start": "rm -rf build/ && webpack --watch --config ./webpack.config.babel.js",
     "test": "jest",
-    "dist": "rm -rf dist/ && NODE_ENV=production webpack --config ./webpack.config.babel.js"
+    "dist": "yarn test && rm -rf dist/ && NODE_ENV=production webpack --config ./webpack.config.babel.js"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
