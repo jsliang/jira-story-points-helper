@@ -23,19 +23,18 @@ export const addPointsByCategory = (
 };
 
 export const getStatusCategoryMap = mappedColumns => {
-  const map = {};
-  mappedColumns.forEach(column => {
-    const mappedStatuses = _.get(column, 'mappedStatuses', []);
-    mappedStatuses.forEach(status => {
+  return _.chain(mappedColumns)
+    .map(column => _.get(column, 'mappedStatuses', []))
+    .flatten()
+    .reduce((accu, status) => {
       const statusId = status.id;
       const statusCategory = _.get(status, 'statusCategory.key', '');
       if (statusId && statusCategory) {
-        map[statusId] = statusCategory;
+        return { ...accu, [statusId]: statusCategory };
       }
-    });
-  });
-
-  return map;
+      return accu;
+    }, {})
+    .value();
 };
 
 export const getAssigneesFromIssues = issues =>
