@@ -2,9 +2,9 @@ import _get from 'lodash.get';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import i18n from './utils/i18n';
 import ReloadButton from './ReloadButton';
 import SprintTable from './SprintTable';
-import { i18n } from './util';
 
 const padZero = num => `0${num}`.substr(-2, 2);
 

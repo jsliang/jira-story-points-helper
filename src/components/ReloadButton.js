@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
+import i18n from './utils/i18n';
 import IconLogo from '../icons/IconLogo';
 import IconReload from '../icons/IconReload';
-import { i18n } from './util';
 
 const Button = ({
   children,
