@@ -1,8 +1,8 @@
 import { ALL_STATUS } from '../constants';
 
 const getTotalPoints = (points = {}) =>
-  ALL_STATUS.reduce(
-    (reduction, statusKey) => reduction + (points[statusKey] || 0),
+  ALL_STATUS.map(status => points[status] || 0).reduce(
+    (sum, points) => sum + points,
     0
   );
 
