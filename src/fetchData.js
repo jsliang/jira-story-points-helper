@@ -1,5 +1,4 @@
-import _get from 'lodash.get';
-import _has from 'lodash.has';
+import _ from 'lodash';
 import request from 'superagent';
 
 export const getAccountId = host => host.replace('.atlassian.net', '').trim();
@@ -26,10 +25,10 @@ export const addPointsByCategory = (
 export const getStatusCategoryMap = mappedColumns => {
   const map = {};
   mappedColumns.forEach(column => {
-    const mappedStatuses = _get(column, 'mappedStatuses', []);
+    const mappedStatuses = _.get(column, 'mappedStatuses', []);
     mappedStatuses.forEach(status => {
       const statusId = status.id;
-      const statusCategory = _get(status, 'statusCategory.key', '');
+      const statusCategory = _.get(status, 'statusCategory.key', '');
       if (statusId && statusCategory) {
         map[statusId] = statusCategory;
       }
@@ -46,7 +45,7 @@ export const getAssigneesFromIssues = issues =>
       return prev;
     }
 
-    if (_has(prev, assigneeId)) {
+    if (_.has(prev, assigneeId)) {
       return prev;
     }
 
@@ -66,7 +65,7 @@ export const getIssuesById = (issues, statusCategoryMap) =>
       ...prev,
       [issue.id]: {
         assigneeId: issue.assignee,
-        points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
+        points: _.get(issue, 'estimateStatistic.statFieldValue.value', 0),
         statusCategory: statusCategoryMap[issue.statusId],
       },
     }),
@@ -121,10 +120,10 @@ export const getSprints = (issues, sprints, statusCategoryMap) => {
 };
 
 const processResponses = responses => {
-  const issues = _get(responses, '[0].body.issues', []);
-  const sprints = _get(responses, '[0].body.sprints', []);
+  const issues = _.get(responses, '[0].body.issues', []);
+  const sprints = _.get(responses, '[0].body.sprints', []);
   const statusCategoryMap = getStatusCategoryMap(
-    _get(responses, '[1].body.rapidListConfig.mappedColumns', [])
+    _.get(responses, '[1].body.rapidListConfig.mappedColumns', [])
   );
 
   if (!sprints.length) return null;
