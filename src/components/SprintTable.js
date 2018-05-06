@@ -1,7 +1,6 @@
 import _sortBy from 'lodash.sortby';
 import _values from 'lodash.values';
-import PureComponent from 'react-pure-render/component';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import { getTotalPoints, i18n } from './util';

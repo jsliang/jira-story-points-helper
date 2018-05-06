@@ -1,6 +1,5 @@
 import _get from 'lodash.get';
-import PureComponent from 'react-pure-render/component';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import ReloadButton from './ReloadButton';

@@ -1,5 +1,4 @@
-import PureComponent from 'react-pure-render/component';
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 export default class IconReload extends PureComponent {
   static defaultProps = {
