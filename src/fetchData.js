@@ -2,18 +2,15 @@ import _get from 'lodash.get';
 import _has from 'lodash.has';
 import request from 'superagent';
 
-const getAccountId = host => host.replace('.atlassian.net', '').trim();
+export const getAccountId = host => host.replace('.atlassian.net', '').trim();
 
-const getRapidViewId = url => {
+export const getRapidViewId = url => {
   const re = /rapidView=(\d+)/;
   const m = re.exec(url);
-  if (m) {
-    return m[1];
-  }
-  return null;
+  return m ? m[1] : null;
 };
 
-const addPointsByCategory = (
+export const addPointsByCategory = (
   assigneePoints = {},
   statusCategory,
   pointsToAdd
