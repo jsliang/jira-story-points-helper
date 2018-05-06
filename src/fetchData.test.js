@@ -4,6 +4,7 @@ import {
   addPointsByCategory,
   getStatusCategoryMap,
   getAssigneesFromIssues,
+  getIssuesById,
 } from './fetchData';
 
 test('getAccountId: "test.atlassian.net" => "test"', () => {
@@ -173,5 +174,67 @@ test('getAssigneesFromIssues', () => {
       id: 'jenny.liang',
       name: 'Jenny Liang',
     },
+  });
+});
+
+test('getIssuesById', () => {
+  expect(
+    getIssuesById(
+      [
+        {
+          id: 119305,
+          assignee: 'danny.lin',
+          estimateStatistic: { statFieldValue: { value: 0 } },
+          statusId: '10201',
+        },
+        {
+          id: 119306,
+          assignee: 'jenny.liang',
+          estimateStatistic: { statFieldValue: { value: 1 } },
+          statusId: '10300',
+        },
+        {
+          id: 112849,
+          assignee: 'danny.lin',
+          estimateStatistic: { statFieldValue: { value: 0.5 } },
+          statusId: '10300',
+        },
+        {
+          id: 91692,
+          assignee: 'danny.lin',
+          statusId: '10200',
+        },
+        {
+          id: 113104,
+          assignee: 'jenny.liang',
+          estimateStatistic: { statFieldValue: { value: 2.5 } },
+          statusId: '5',
+        },
+      ],
+      {
+        '5': 'done',
+        '10200': 'new',
+        '10201': 'done',
+        '10300': 'indeterminate',
+      }
+    )
+  ).toEqual({
+    '112849': {
+      assigneeId: 'danny.lin',
+      points: 0.5,
+      statusCategory: 'indeterminate',
+    },
+    '113104': {
+      assigneeId: 'jenny.liang',
+      points: 2.5,
+      statusCategory: 'done',
+    },
+    '119305': { assigneeId: 'danny.lin', points: 0, statusCategory: 'done' },
+    '119306': {
+      assigneeId: 'jenny.liang',
+      points: 1,
+      statusCategory: 'indeterminate',
+    },
+    '91692': { assigneeId: 'danny.lin', points: 0, statusCategory: 'new' },
   });
 });
