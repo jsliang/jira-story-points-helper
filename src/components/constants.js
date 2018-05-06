@@ -20,10 +20,4 @@ export const STATUS_BORDER_RADIUS = {
   [STATUS_DONE]: '0 4px 4px 0',
 };
 
-export const STATUS_TEXT = {
-  [STATUS_NEW]: chrome.i18n.getMessage('txtNew'),
-  [STATUS_INDETERMINATE]: chrome.i18n.getMessage('txtIndeterminate'),
-  [STATUS_DONE]: chrome.i18n.getMessage('txtDone'),
-};
-
 export const ALL_STATUS = [STATUS_NEW, STATUS_INDETERMINATE, STATUS_DONE];
