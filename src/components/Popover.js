@@ -1,4 +1,4 @@
-import _get from 'lodash.get';
+import _ from 'lodash';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
@@ -101,7 +101,7 @@ export default class Popover extends PureComponent {
 
     this.state = {
       show: false,
-      visibleSprints: new Set([_get(props, 'sprints[0].id')]),
+      visibleSprints: new Set([_.get(props, 'sprints[0].id')]),
     };
   }
 

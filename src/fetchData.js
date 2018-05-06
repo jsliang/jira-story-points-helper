@@ -1,5 +1,4 @@
-import _get from 'lodash.get';
-import _has from 'lodash.has';
+import _ from 'lodash';
 import request from 'superagent';
 
 export const getAccountId = host => host.replace('.atlassian.net', '').trim();
@@ -24,19 +23,18 @@ export const addPointsByCategory = (
 };
 
 export const getStatusCategoryMap = mappedColumns => {
-  const map = {};
-  mappedColumns.forEach(column => {
-    const mappedStatuses = _get(column, 'mappedStatuses', []);
-    mappedStatuses.forEach(status => {
+  return _.chain(mappedColumns)
+    .map(column => _.get(column, 'mappedStatuses', []))
+    .flatten()
+    .reduce((accu, status) => {
       const statusId = status.id;
-      const statusCategory = _get(status, 'statusCategory.key', '');
+      const statusCategory = _.get(status, 'statusCategory.key', '');
       if (statusId && statusCategory) {
-        map[statusId] = statusCategory;
+        return { ...accu, [statusId]: statusCategory };
       }
-    });
-  });
-
-  return map;
+      return accu;
+    }, {})
+    .value();
 };
 
 export const getAssigneesFromIssues = issues =>
@@ -46,7 +44,7 @@ export const getAssigneesFromIssues = issues =>
       return prev;
     }
 
-    if (_has(prev, assigneeId)) {
+    if (_.has(prev, assigneeId)) {
       return prev;
     }
 
@@ -66,44 +64,52 @@ export const getIssuesById = (issues, statusCategoryMap) =>
       ...prev,
       [issue.id]: {
         assigneeId: issue.assignee,
-        points: _get(issue, 'estimateStatistic.statFieldValue.value', 0),
+        points: _.get(issue, 'estimateStatistic.statFieldValue.value', 0),
         statusCategory: statusCategoryMap[issue.statusId],
       },
     }),
     {}
   );
 
-export const getAssigneesBySprint = (assignees, issuesById, issuesIds) =>
-  issuesIds.reduce((prev, issueId) => {
-    const { assigneeId, points = 0, statusCategory } = issuesById[issueId];
-    if (!assigneeId || !points || !statusCategory) return prev;
+export const getAssigneesBySprint = (assignees, issuesById, issuesIds) => {
+  return _.chain(issuesIds)
+    .map(issueId => issuesById[issueId])
+    .filter(
+      ({ assigneeId, points = 0, statusCategory }) =>
+        assigneeId && points && statusCategory
+    )
+    .map(issue => issue.assigneeId)
+    .uniq()
+    .reduce(
+      (accu, assigneeId) => ({ ...accu, [assigneeId]: assignees[assigneeId] }),
+      {}
+    )
+    .value();
+};
 
-    return {
-      ...prev,
-      [assigneeId]: assignees[assigneeId],
-    };
-  }, {});
-
-export const getAssigneePointsBySprint = (issuesById, issuesIds) =>
-  issuesIds.reduce((prev, issueId) => {
-    const issue = issuesById[issueId];
-    if (!issue) return prev;
-
-    const { assigneeId, points = 0, statusCategory } = issue;
-    if (!points || !assigneeId || !statusCategory) return prev;
-
-    const oldAssigneePoints = prev[assigneeId];
-    const newAssigneePoints = addPointsByCategory(
-      oldAssigneePoints,
-      statusCategory,
-      points
-    );
-
-    return {
-      ...prev,
-      [issue.assigneeId]: newAssigneePoints,
-    };
-  }, {});
+export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
+  return _.chain(issuesIds)
+    .map(issueId => issuesById[issueId])
+    .compact()
+    .filter(issue => {
+      const { assigneeId, points = 0, statusCategory } = issue;
+      return assigneeId && points && statusCategory;
+    })
+    .reduce((prev, issue) => {
+      const { assigneeId, points = 0, statusCategory } = issue;
+      const oldAssigneePoints = prev[assigneeId];
+      const newAssigneePoints = addPointsByCategory(
+        oldAssigneePoints,
+        statusCategory,
+        points
+      );
+      return {
+        ...prev,
+        [assigneeId]: newAssigneePoints,
+      };
+    }, {})
+    .value();
+};
 
 export const getSprints = (issues, sprints, statusCategoryMap) => {
   const assignees = getAssigneesFromIssues(issues);
@@ -121,10 +127,10 @@ export const getSprints = (issues, sprints, statusCategoryMap) => {
 };
 
 const processResponses = responses => {
-  const issues = _get(responses, '[0].body.issues', []);
-  const sprints = _get(responses, '[0].body.sprints', []);
+  const issues = _.get(responses, '[0].body.issues', []);
+  const sprints = _.get(responses, '[0].body.sprints', []);
   const statusCategoryMap = getStatusCategoryMap(
-    _get(responses, '[1].body.rapidListConfig.mappedColumns', [])
+    _.get(responses, '[1].body.rapidListConfig.mappedColumns', [])
   );
 
   if (!sprints.length) return null;

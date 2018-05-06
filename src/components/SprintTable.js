@@ -1,5 +1,4 @@
-import _sortBy from 'lodash.sortby';
-import _values from 'lodash.values';
+import _ from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -15,7 +14,7 @@ const SprintTable = ({
   sprint: { assignees = [], name = '', pointsByAssignee = {} },
   toggle = () => {},
 }) => {
-  const totalStoryPoints = _values(assignees).reduce(
+  const totalStoryPoints = _.values(assignees).reduce(
     (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
     0
   );
@@ -28,8 +27,8 @@ const SprintTable = ({
     );
   }
 
-  const sortedAssignees = _sortBy(
-    _values(assignees),
+  const sortedAssignees = _.sortBy(
+    _.values(assignees),
     assignee => assignee.name
   );
 
