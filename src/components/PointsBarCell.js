@@ -9,7 +9,7 @@ import {
   STATUS_BORDER_RADIUS,
   STATUS_FONT_COLOR,
 } from './constants';
-import { formatNumber } from './util';
+import formatNumber from './utils/formatNumber';
 
 const STATUS_TEXT = {
   [STATUS_NEW]: chrome.i18n.getMessage('txtNew'),

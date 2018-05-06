@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { formatNumber } from './util';
-
+import formatNumber from './utils/formatNumber';
 import PointsBar from './PointsBar';
 
 const AssigneeRow = ({
