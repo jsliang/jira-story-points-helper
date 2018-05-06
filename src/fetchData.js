@@ -71,16 +71,21 @@ export const getIssuesById = (issues, statusCategoryMap) =>
     {}
   );
 
-export const getAssigneesBySprint = (assignees, issuesById, issuesIds) =>
-  issuesIds.reduce((prev, issueId) => {
-    const { assigneeId, points = 0, statusCategory } = issuesById[issueId];
-    if (!assigneeId || !points || !statusCategory) return prev;
-
-    return {
-      ...prev,
-      [assigneeId]: assignees[assigneeId],
-    };
-  }, {});
+export const getAssigneesBySprint = (assignees, issuesById, issuesIds) => {
+  return _.chain(issuesIds)
+    .map(issueId => issuesById[issueId])
+    .filter(
+      ({ assigneeId, points = 0, statusCategory }) =>
+        assigneeId && points && statusCategory
+    )
+    .map(issue => issue.assigneeId)
+    .uniq()
+    .reduce(
+      (accu, assigneeId) => ({ ...accu, [assigneeId]: assignees[assigneeId] }),
+      {}
+    )
+    .value();
+};
 
 export const getAssigneePointsBySprint = (issuesById, issuesIds) =>
   issuesIds.reduce((prev, issueId) => {
