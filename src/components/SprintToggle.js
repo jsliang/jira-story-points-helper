@@ -1,36 +1,22 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-class ToggleButton extends PureComponent {
-  static defaultProps = {
-    expanded: false,
-    hover: false,
-    name: '',
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-  };
-
-  render() {
-    const {
-      className,
-      expanded,
-      hover,
-      name,
-      onMouseEnter,
-      onMouseLeave,
-    } = this.props;
-
-    return (
-      <div
-        className={className}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-      >
-        {expanded ? '+' : '-'} {name}
-      </div>
-    );
-  }
-}
+const ToggleButton = ({
+  className,
+  expanded = false,
+  hover = false,
+  name = '',
+  onMouseEnter = () => {},
+  onMouseLeave = () => {},
+}) => (
+  <div
+    className={className}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+  >
+    {expanded ? '+' : '-'} {name}
+  </div>
+);
 
 const StyledToggleButton = styled(ToggleButton)`
   ${({ expanded }) => (expanded ? '' : 'color: #707070')};

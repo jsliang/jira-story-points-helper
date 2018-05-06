@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import {
@@ -10,28 +10,23 @@ import {
 } from './constants';
 import { formatNumber } from './util';
 
-class PointsBarCell extends PureComponent {
-  static defaultProps = {
-    percentage: 0,
-    points: 0,
-    status: STATUS_NEW,
-  };
+const PointsBarCell = ({
+  className,
+  points = 0,
+  percentage = 0,
+  status = STATUS_NEW,
+}) => {
+  const pntStr = formatNumber(points);
 
-  render() {
-    const { className, points, percentage, status } = this.props;
-
-    const pntStr = formatNumber(points);
-
-    return (
-      <div
-        className={className}
-        title={`${STATUS_TEXT[status]}: ${pntStr} (${percentage}%)`}
-      >
-        {pntStr}
-      </div>
-    );
-  }
-}
+  return (
+    <div
+      className={className}
+      title={`${STATUS_TEXT[status]}: ${pntStr} (${percentage}%)`}
+    >
+      {pntStr}
+    </div>
+  );
+};
 
 export default styled(PointsBarCell)`
   align-items: center;

@@ -5,37 +5,25 @@ import IconLogo from '../icons/IconLogo';
 import IconReload from '../icons/IconReload';
 import { i18n } from './util';
 
-class Button extends PureComponent {
-  static defaultProps = {
-    onClick: () => {},
-    showReloadIcon: false,
-    hover: false,
-  };
-
-  render() {
-    const {
-      children,
-      className,
-      hover,
-      onClick,
-      onMouseEnter,
-      onMouseOut,
-      showReloadIcon,
-    } = this.props;
-
-    return (
-      <div
-        className={className}
-        onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseOut}
-        title={i18n('txtReloadData')}
-      >
-        {children}
-      </div>
-    );
-  }
-}
+const Button = ({
+  children,
+  className,
+  hover = false,
+  onClick = () => {},
+  onMouseEnter = () => {},
+  onMouseOut = () => {},
+  showReloadIcon = false,
+}) => (
+  <div
+    className={className}
+    onClick={onClick}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseOut}
+    title={i18n('txtReloadData')}
+  >
+    {children}
+  </div>
+);
 
 const StyledButton = styled(Button)`
   align-items: center;

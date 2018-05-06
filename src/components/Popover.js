@@ -24,62 +24,43 @@ const formatDate = d => {
   return `${date} ${time}`;
 };
 
-class Panel extends PureComponent {
-  static defaultProps = {
-    doFetchData: () => {},
-    fetchTime: new Date(),
-    hidePopover: () => {},
-    show: false,
-    showPopover: () => {},
-    sprints: [],
-    sprints: {},
-    toggle: () => {},
-    visibleSprints: new Set(),
-  };
-
-  render() {
-    const {
-      className,
-      doFetchData,
-      fetchTime,
-      hidePopover,
-      show,
-      showPopover,
-      sprints,
-      toggle,
-      visibleSprints,
-    } = this.props;
-
-    return (
-      <div
-        className={className}
-        onMouseEnter={showPopover}
-        onMouseLeave={hidePopover}
-        style={{}}
-      >
-        <div className="container">
-          <ReloadButton
-            fetchTime={fetchTime}
-            showReloadIcon={show}
-            onClick={doFetchData}
-          />
-          <p className="last-updated-time">
-            {i18n('txtLastUpdatedTime')}
-            {formatDate(fetchTime)}
-          </p>
-          {sprints.map(sprint => (
-            <SprintTable
-              expanded={visibleSprints.has(sprint.id)}
-              key={sprint.id}
-              sprint={sprint}
-              toggle={toggle(sprint.id)}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-}
+const Panel = ({
+  className,
+  doFetchData = () => {},
+  fetchTime = new Date(),
+  hidePopover = () => {},
+  show = false,
+  showPopover = () => {},
+  sprints = [],
+  toggle = () => {},
+  visibleSprints = newSet(),
+}) => (
+  <div
+    className={className}
+    onMouseEnter={showPopover}
+    onMouseLeave={hidePopover}
+  >
+    <div className="container">
+      <ReloadButton
+        fetchTime={fetchTime}
+        showReloadIcon={show}
+        onClick={doFetchData}
+      />
+      <p className="last-updated-time">
+        {i18n('txtLastUpdatedTime')}
+        {formatDate(fetchTime)}
+      </p>
+      {sprints.map(sprint => (
+        <SprintTable
+          expanded={visibleSprints.has(sprint.id)}
+          key={sprint.id}
+          sprint={sprint}
+          toggle={toggle(sprint.id)}
+        />
+      ))}
+    </div>
+  </div>
+);
 
 const StyledPanel = styled(Panel)`
   background-color: #fff;
