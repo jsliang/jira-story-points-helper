@@ -13,15 +13,17 @@ $ npm start
 
 ### How to load this Chrome Extension
 
-1. `git clone` this project
+1.  `git clone` this project
 
-2. Visit `chrome://extensions` in your browser.
+2.  Execute `yarn && npm start` to create the `build` folder.
 
-3. Ensure that the **Developer mode** checkbox in the top right-hand corner is checked.
+3.  Visit `chrome://extensions` in your browser.
 
-4. Click **Load unpacked extension…** to pop up a file-selection dialog.
+4.  Ensure that the **Developer mode** toggle in the top right-hand corner is switched on.
 
-5. Navigate to this repo directory and select the `build` folder.
+5.  Click **LOAD UNPACKED** to pop up a file-selection dialog.
+
+6.  Navigate to this repo directory and select the `build` folder.
 
 ## Credits
 
