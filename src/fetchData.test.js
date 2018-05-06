@@ -3,6 +3,7 @@ import {
   getRapidViewId,
   addPointsByCategory,
   getStatusCategoryMap,
+  getAssigneesFromIssues,
 } from './fetchData';
 
 test('getAccountId: "test.atlassian.net" => "test"', () => {
@@ -129,5 +130,48 @@ test('getStatusCategoryMap', () => {
     '11004': 'new',
     '11005': 'new',
     '11704': 'indeterminate',
+  });
+});
+
+test('getAssigneesFromIssues', () => {
+  expect(
+    getAssigneesFromIssues([
+      {
+        assignee: 'danny.lin',
+        assigneeName: 'Danny Lin',
+        avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      },
+      {
+        assignee: 'jenny.liang',
+        assigneeName: 'Jenny Liang',
+        avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      },
+      {
+        assignee: 'jenny.liang',
+        assigneeName: 'Jenny Liang',
+        avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      },
+      {
+        assignee: 'danny.lin',
+        assigneeName: 'Danny Lin',
+        avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      },
+      {
+        assignee: 'danny.lin',
+        assigneeName: 'Danny Lin',
+        avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      },
+    ])
+  ).toEqual({
+    'danny.lin': {
+      avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      id: 'danny.lin',
+      name: 'Danny Lin',
+    },
+    'jenny.liang': {
+      avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      id: 'jenny.liang',
+      name: 'Jenny Liang',
+    },
   });
 });
