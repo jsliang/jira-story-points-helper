@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import PointsBarCell from './PointsBarCell';
 
 import { ALL_STATUS } from './constants';
-import { getTotalPoints } from './util';
+import getTotalPoints from './utils/getTotalPoints';
 
 const PointsBar = ({ className, points = {} }) => {
   const totalPoints = getTotalPoints(points);

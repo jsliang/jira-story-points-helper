@@ -3,12 +3,19 @@ import styled from 'styled-components';
 
 import {
   STATUS_NEW,
+  STATUS_INDETERMINATE,
+  STATUS_DONE,
   STATUS_BG_COLOR,
   STATUS_BORDER_RADIUS,
   STATUS_FONT_COLOR,
-  STATUS_TEXT,
 } from './constants';
-import { formatNumber } from './util';
+import formatNumber from './utils/formatNumber';
+
+const STATUS_TEXT = {
+  [STATUS_NEW]: chrome.i18n.getMessage('txtNew'),
+  [STATUS_INDETERMINATE]: chrome.i18n.getMessage('txtIndeterminate'),
+  [STATUS_DONE]: chrome.i18n.getMessage('txtDone'),
+};
 
 const PointsBarCell = ({
   className,

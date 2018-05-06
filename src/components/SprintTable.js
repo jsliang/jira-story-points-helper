@@ -3,7 +3,8 @@ import _values from 'lodash.values';
 import React from 'react';
 import styled from 'styled-components';
 
-import { getTotalPoints, i18n } from './util';
+import getTotalPoints from './utils/getTotalPoints';
+import i18n from './utils/i18n';
 
 import AssigneeRow from './AssigneeRow';
 import SprintToggle from './SprintToggle';
