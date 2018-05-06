@@ -1,6 +1,7 @@
 import _get from 'lodash.get';
 import PureComponent from 'react-pure-render/component';
 import React from 'react';
+import styled from 'styled-components';
 
 import ReloadButton from './ReloadButton';
 import SprintTable from './SprintTable';
@@ -23,6 +24,88 @@ const formatDate = d => {
 
   return `${date} ${time}`;
 };
+
+class Panel extends PureComponent {
+  static defaultProps = {
+    doFetchData: () => {},
+    fetchTime: new Date(),
+    hidePopover: () => {},
+    show: false,
+    showPopover: () => {},
+    sprints: [],
+    sprints: {},
+    toggle: () => {},
+    visibleSprints: new Set(),
+  };
+
+  render() {
+    const {
+      className,
+      doFetchData,
+      fetchTime,
+      hidePopover,
+      show,
+      showPopover,
+      sprints,
+      toggle,
+      visibleSprints,
+    } = this.props;
+
+    return (
+      <div
+        className={className}
+        onMouseEnter={showPopover}
+        onMouseLeave={hidePopover}
+        style={{}}
+      >
+        <div className="container">
+          <ReloadButton
+            fetchTime={fetchTime}
+            showReloadIcon={show}
+            onClick={doFetchData}
+          />
+          <p className="last-updated-time">
+            {i18n('txtLastUpdatedTime')}
+            {formatDate(fetchTime)}
+          </p>
+          {sprints.map(sprint => (
+            <SprintTable
+              expanded={visibleSprints.has(sprint.id)}
+              key={sprint.id}
+              sprint={sprint}
+              toggle={toggle(sprint.id)}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
+const StyledPanel = styled(Panel)`
+  background-color: #fff;
+  border-radius: 0 5px 0 0;
+  bottom: 0;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  color: #333;
+  font-size: 0.8125rem;
+  left: 0;
+  position: fixed;
+  ${({ show }) => (show ? '' : 'transform: translate(-90%, 50%);')};
+  transition: transform 0.5s ease-in-out;
+  z-index: 300;
+
+  .container {
+    position: relative;
+    padding: 20px;
+  }
+
+  .last-updated-time {
+    color: #999;
+    font-size: 0.75rem;
+    padding-bottom: 1em;
+  }
+`;
 
 export default class Popover extends PureComponent {
   static defaultProps = {
@@ -48,12 +131,9 @@ export default class Popover extends PureComponent {
   };
   hidePopover = () => {
     window.clearTimeout(this.hideTimer);
-    this.hideTimer = window.setTimeout(
-      () => {
-        this.setState({ show: false });
-      },
-      1000,
-    );
+    this.hideTimer = window.setTimeout(() => {
+      this.setState({ show: false });
+    }, 1000);
   };
 
   toggle = sprintId => () => {
@@ -84,50 +164,16 @@ export default class Popover extends PureComponent {
     }
 
     return (
-      <div
-        onMouseEnter={this.showPopover}
-        onMouseLeave={this.hidePopover}
-        style={{
-          backgroundColor: '#fff',
-          borderRadius: '0 5px 0 0',
-          bottom: 0,
-          boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.5)',
-          color: '#333',
-          fontSize: '0.8125rem',
-          left: 0,
-          position: 'fixed',
-          transform: show ? undefined : 'translate(-90%, 50%)',
-          transition: 'transform 0.5s ease-in-out',
-          zIndex: 300,
-        }}
-      >
-        <div
-          style={{
-            position: 'relative',
-            padding: '20px',
-          }}
-        >
-          <ReloadButton
-            fetchTime={fetchTime}
-            showReloadIcon={show}
-            onClick={doFetchData}
-          />
-          <p
-            style={{ color: '#999', fontSize: '0.75rem', paddingBottom: '1em' }}
-          >
-            {i18n('txtLastUpdatedTime')}
-            {formatDate(fetchTime)}
-          </p>
-          {sprints.map(sprint => (
-            <SprintTable
-              expanded={visibleSprints.has(sprint.id)}
-              key={sprint.id}
-              sprint={sprint}
-              toggle={this.toggle(sprint.id)}
-            />
-          ))}
-        </div>
-      </div>
+      <StyledPanel
+        doFetchData={doFetchData}
+        fetchTime={fetchTime}
+        hidePopover={this.hidePopover}
+        show={show}
+        showPopover={this.showPopover}
+        sprints={sprints}
+        toggle={this.toggle}
+        visibleSprints={visibleSprints}
+      />
     );
   }
 }
