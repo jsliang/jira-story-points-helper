@@ -6,6 +6,7 @@ import {
   getAssigneesFromIssues,
   getIssuesById,
   getAssigneesBySprint,
+  getAssigneePointsBySprint,
 } from './fetchData';
 
 test('getAccountId: "test.atlassian.net" => "test"', () => {
@@ -271,5 +272,39 @@ test('getAssigneesBySprint', () => {
       id: 'jenny.liang',
       name: 'Jenny Liang',
     },
+  });
+});
+
+test('getAssigneePointsBySprint', () => {
+  expect(
+    getAssigneePointsBySprint(
+      {
+        '112849': {
+          assigneeId: 'danny.lin',
+          points: 0.5,
+          statusCategory: 'indeterminate',
+        },
+        '113104': {
+          assigneeId: 'jenny.liang',
+          points: 2.5,
+          statusCategory: 'done',
+        },
+        '119305': {
+          assigneeId: 'danny.lin',
+          points: 0,
+          statusCategory: 'done',
+        },
+        '119306': {
+          assigneeId: 'jenny.liang',
+          points: 1,
+          statusCategory: 'indeterminate',
+        },
+        '91692': { assigneeId: 'danny.lin', points: 0, statusCategory: 'new' },
+      },
+      [112849, 113104, 119305, 119306, 91692]
+    )
+  ).toEqual({
+    'danny.lin': { indeterminate: 0.5 },
+    'jenny.liang': { done: 2.5, indeterminate: 1 },
   });
 });
