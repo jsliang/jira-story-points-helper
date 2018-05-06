@@ -9,7 +9,7 @@ const config = {
     index: ['./src/index.js'],
   },
   output: {
-    path: IS_PRODUCTION ? './dist' : './build',
+    path: IS_PRODUCTION ? `${__dirname}/dist` : `${__dirname}/build`,
     filename: '[name].js',
   },
   plugins: [
