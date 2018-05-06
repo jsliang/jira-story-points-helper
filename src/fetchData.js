@@ -87,26 +87,29 @@ export const getAssigneesBySprint = (assignees, issuesById, issuesIds) => {
     .value();
 };
 
-export const getAssigneePointsBySprint = (issuesById, issuesIds) =>
-  issuesIds.reduce((prev, issueId) => {
-    const issue = issuesById[issueId];
-    if (!issue) return prev;
-
-    const { assigneeId, points = 0, statusCategory } = issue;
-    if (!points || !assigneeId || !statusCategory) return prev;
-
-    const oldAssigneePoints = prev[assigneeId];
-    const newAssigneePoints = addPointsByCategory(
-      oldAssigneePoints,
-      statusCategory,
-      points
-    );
-
-    return {
-      ...prev,
-      [issue.assigneeId]: newAssigneePoints,
-    };
-  }, {});
+export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
+  return _.chain(issuesIds)
+    .map(issueId => issuesById[issueId])
+    .compact()
+    .filter(issue => {
+      const { assigneeId, points = 0, statusCategory } = issue;
+      return assigneeId && points && statusCategory;
+    })
+    .reduce((prev, issue) => {
+      const { assigneeId, points = 0, statusCategory } = issue;
+      const oldAssigneePoints = prev[assigneeId];
+      const newAssigneePoints = addPointsByCategory(
+        oldAssigneePoints,
+        statusCategory,
+        points
+      );
+      return {
+        ...prev,
+        [assigneeId]: newAssigneePoints,
+      };
+    }, {})
+    .value();
+};
 
 export const getSprints = (issues, sprints, statusCategoryMap) => {
   const assignees = getAssigneesFromIssues(issues);
