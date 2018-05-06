@@ -65,8 +65,4 @@ const config = {
   },
 };
 
-if (IS_PRODUCTION) {
-  config.plugins.push(new webpack.optimize.DedupePlugin());
-}
-
 module.exports = config;
