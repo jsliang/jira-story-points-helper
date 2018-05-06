@@ -5,6 +5,7 @@ import {
   getStatusCategoryMap,
   getAssigneesFromIssues,
   getIssuesById,
+  getAssigneesBySprint,
 } from './fetchData';
 
 test('getAccountId: "test.atlassian.net" => "test"', () => {
@@ -236,5 +237,39 @@ test('getIssuesById', () => {
       statusCategory: 'indeterminate',
     },
     '91692': { assigneeId: 'danny.lin', points: 0, statusCategory: 'new' },
+  });
+});
+
+test('getAssigneesBySprint', () => {
+  expect(
+    getAssigneesBySprint(
+      {
+        'jenny.liang': {
+          avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+          id: 'jenny.liang',
+          name: 'Jenny Liang',
+        },
+      },
+      {
+        '113104': {
+          assigneeId: 'jenny.liang',
+          points: 2.5,
+          statusCategory: 'done',
+        },
+        '119306': {
+          assigneeId: 'jenny.liang',
+          points: 1,
+          statusCategory: 'indeterminate',
+        },
+        '91692': { assigneeId: 'danny.lin', points: 0, statusCategory: 'new' },
+      },
+      ['113104', '119306']
+    )
+  ).toEqual({
+    'jenny.liang': {
+      avatarUrl: 'https://dummyimage.com/48x48/000/fff',
+      id: 'jenny.liang',
+      name: 'Jenny Liang',
+    },
   });
 });
