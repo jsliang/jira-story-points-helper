@@ -1,9 +1,11 @@
+import * as R from 'ramda';
 import { ALL_STATUS } from '../constants';
 
 const getTotalPoints = (points = {}) =>
-  ALL_STATUS.map(status => points[status] || 0).reduce(
-    (sum, points) => sum + points,
-    0
-  );
+  R.pipe(
+    R.map(status => R.prop(status, points)),
+    R.map(R.defaultTo(0)),
+    R.sum
+  )(ALL_STATUS);
 
 export default getTotalPoints;
