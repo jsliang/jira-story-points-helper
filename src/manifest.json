@@ -6,21 +6,15 @@
   "icons": {
     "128": "icon.png"
   },
-  "version": "0.4.3",
+  "version": "0.4.4",
   "author": "Jui-Shan Liang <jsliang.tw@gmail.com>",
   "homepage_url": "https://github.com/jsliang/jira-story-points-helper",
   "default_locale": "en",
-  "permissions": [
-    "https://*.atlassian.net/secure/RapidBoard.jspa*"
-  ],
+  "permissions": ["https://*.atlassian.net/secure/RapidBoard.jspa*"],
   "content_scripts": [
     {
-      "matches": [
-        "https://*.atlassian.net/secure/RapidBoard.jspa*"
-      ],
-      "js": [
-        "index.js"
-      ],
+      "matches": ["https://*.atlassian.net/secure/RapidBoard.jspa*"],
+      "js": ["index.js"],
       "run_at": "document_end"
     }
   ]

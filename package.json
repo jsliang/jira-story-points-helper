@@ -1,6 +1,6 @@
 {
   "name": "jira-story-points-helper",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "scripts": {
     "start": "rm -rf build/ && webpack --watch --config ./webpack.config.babel.js",
     "test": "jest",
