@@ -1,101 +1,94 @@
-import _ from 'lodash';
+import * as R from 'ramda';
 import request from 'superagent';
 
-export const getAccountId = host => host.replace('.atlassian.net', '').trim();
+const getArrayFromProp = (prop = '') => R.pipe(R.prop(prop), R.defaultTo([]));
+const getArrayFromPath = (path = []) => R.pipe(R.path(path), R.defaultTo([]));
 
-export const getRapidViewId = url => {
-  const re = /rapidView=(\d+)/;
-  const m = re.exec(url);
-  return m ? m[1] : null;
-};
+export const getAccountId = R.pipe(R.replace('.atlassian.net', ''), R.trim);
+
+export const getRapidViewId = R.pipe(
+  R.match(/rapidView=(\d+)/),
+  R.prop(1),
+  R.defaultTo(null)
+);
 
 export const addPointsByCategory = (
   assigneePoints = {},
   statusCategory,
   pointsToAdd
-) => {
-  const oldValue = assigneePoints[statusCategory] || 0;
+) =>
+  R.over(
+    R.lensProp(statusCategory),
+    R.pipe(R.defaultTo(0), R.add(pointsToAdd)),
+    assigneePoints
+  );
 
-  return {
-    ...assigneePoints,
-    [statusCategory]: oldValue + pointsToAdd,
-  };
-};
-
-export const getStatusCategoryMap = mappedColumns => {
-  return _.chain(mappedColumns)
-    .map(column => _.get(column, 'mappedStatuses', []))
-    .flatten()
-    .reduce((accu, status) => {
+export const getStatusCategoryMap = mappedColumns =>
+  R.pipe(
+    R.map(getArrayFromProp('mappedStatuses')),
+    R.unnest,
+    R.map(status => {
       const statusId = status.id;
-      const statusCategory = _.get(status, 'statusCategory.key', '');
-      if (statusId && statusCategory) {
-        return { ...accu, [statusId]: statusCategory };
-      }
-      return accu;
-    }, {})
-    .value();
-};
+      const statusCategory = getArrayFromPath(['statusCategory', 'key'])(
+        status
+      );
+      return [statusId, statusCategory];
+    }),
+    R.filter(([statusId, statusCategory]) => statusId && statusCategory),
+    R.fromPairs
+  )(mappedColumns);
 
 export const getAssigneesFromIssues = issues =>
-  issues.reduce((prev, issue) => {
-    const assigneeId = issue.assignee;
-    if (!assigneeId) {
-      return prev;
-    }
-
-    if (_.has(prev, assigneeId)) {
-      return prev;
-    }
-
-    return {
-      ...prev,
-      [assigneeId]: {
-        id: assigneeId,
+  R.pipe(
+    R.uniqBy(R.prop('assignee')),
+    R.filter(R.prop('assignee')),
+    R.map(issue => [
+      issue.assignee,
+      {
+        id: issue.assignee,
         name: issue.assigneeName,
         avatarUrl: issue.avatarUrl,
       },
-    };
-  }, {});
+    ]),
+    R.fromPairs
+  )(issues);
 
 export const getIssuesById = (issues, statusCategoryMap) =>
-  issues.reduce(
-    (prev, issue) => ({
-      ...prev,
-      [issue.id]: {
+  R.pipe(
+    R.map(issue => [
+      issue.id,
+      {
         assigneeId: issue.assignee,
-        points: _.get(issue, 'estimateStatistic.statFieldValue.value', 0),
+        points:
+          R.path(['estimateStatistic', 'statFieldValue', 'value'], issue) || 0,
         statusCategory: statusCategoryMap[issue.statusId],
       },
-    }),
-    {}
-  );
+    ]),
+    R.fromPairs
+  )(issues);
 
-export const getAssigneesBySprint = (assignees, issuesById, issuesIds) => {
-  return _.chain(issuesIds)
-    .map(issueId => issuesById[issueId])
-    .filter(
+export const getAssigneesBySprint = (assignees, issuesById, issuesIds) =>
+  R.pipe(
+    R.map(issueId => issuesById[issueId]),
+    R.filter(
       ({ assigneeId, points = 0, statusCategory }) =>
         assigneeId && points && statusCategory
-    )
-    .map(issue => issue.assigneeId)
-    .uniq()
-    .reduce(
-      (accu, assigneeId) => ({ ...accu, [assigneeId]: assignees[assigneeId] }),
-      {}
-    )
-    .value();
-};
+    ),
+    R.map(issue => issue.assigneeId),
+    R.uniq,
+    R.map(assigneeId => [assigneeId, assignees[assigneeId]]),
+    R.fromPairs
+  )(issuesIds);
 
-export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
-  return _.chain(issuesIds)
-    .map(issueId => issuesById[issueId])
-    .compact()
-    .filter(issue => {
+export const getAssigneePointsBySprint = (issuesById, issuesIds) =>
+  R.pipe(
+    R.map(issueId => issuesById[issueId]),
+    R.filter(Boolean),
+    R.filter(issue => {
       const { assigneeId, points = 0, statusCategory } = issue;
       return assigneeId && points && statusCategory;
-    })
-    .reduce((prev, issue) => {
+    }),
+    R.reduce((prev, issue) => {
       const { assigneeId, points = 0, statusCategory } = issue;
       const oldAssigneePoints = prev[assigneeId];
       const newAssigneePoints = addPointsByCategory(
@@ -108,14 +101,13 @@ export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
         [assigneeId]: newAssigneePoints,
       };
     }, {})
-    .value();
-};
+  )(issuesIds);
 
 export const getSprints = (issues, sprints, statusCategoryMap) => {
   const assignees = getAssigneesFromIssues(issues);
   const issuesById = getIssuesById(issues, statusCategoryMap);
 
-  return sprints.map(sprint => {
+  return R.map(sprint => {
     const { id, issuesIds, name } = sprint;
     return {
       id,
@@ -123,15 +115,20 @@ export const getSprints = (issues, sprints, statusCategoryMap) => {
       assignees: getAssigneesBySprint(assignees, issuesById, issuesIds),
       pointsByAssignee: getAssigneePointsBySprint(issuesById, issuesIds),
     };
-  });
+  })(sprints);
 };
 
 const processResponses = responses => {
-  const issues = _.get(responses, '[0].body.issues', []);
-  const sprints = _.get(responses, '[0].body.sprints', []);
-  const statusCategoryMap = getStatusCategoryMap(
-    _.get(responses, '[1].body.rapidListConfig.mappedColumns', [])
-  );
+  const issues = getArrayFromPath([0, 'body', 'issues'])(responses);
+  const sprints = getArrayFromPath([0, 'body', 'sprints'])(responses);
+
+  const mappedColumns = getArrayFromPath([
+    1,
+    'body',
+    'rapidListConfig',
+    'mappedColumns',
+  ])(responses);
+  const statusCategoryMap = getStatusCategoryMap(mappedColumns);
 
   if (!sprints.length) return null;
 

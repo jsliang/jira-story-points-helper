@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as R from 'ramda';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,29 +8,30 @@ import i18n from './utils/i18n';
 import AssigneeRow from './AssigneeRow';
 import SprintToggle from './SprintToggle';
 
+const getObjectValues = R.pipe(R.toPairs, R.map(([key, value]) => value));
+const sortObjectsByName = R.sortBy(R.prop('name'));
+
 const SprintTable = ({
   className,
   expanded = false,
-  sprint: { assignees = [], name = '', pointsByAssignee = {} },
+  sprint: { assignees: assigneeMap = [], name = '', pointsByAssignee = {} },
   toggle = () => {},
 }) => {
-  const totalStoryPoints = _.values(assignees).reduce(
-    (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
-    0
-  );
+  const assignees = getObjectValues(assigneeMap);
 
-  if (totalStoryPoints === 0) {
+  const totalStoryPoints = R.pipe(
+    R.map(assignee => getTotalPoints(pointsByAssignee[assignee.id])),
+    R.sum
+  )(assignees);
+
+  if (totalStoryPoints === 0)
     return (
       <p>
         <strong>{name}:</strong> {i18n('txtErrNoStoryPoints')}
       </p>
     );
-  }
 
-  const sortedAssignees = _.sortBy(
-    _.values(assignees),
-    assignee => assignee.name
-  );
+  const sortedAssignees = sortObjectsByName(assignees);
 
   return (
     <table className={className}>
