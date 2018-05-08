@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as R from 'ramda';
 import request from 'superagent';
 
 export const getAccountId = host => host.replace('.atlassian.net', '').trim();
@@ -22,31 +22,26 @@ export const addPointsByCategory = (
   };
 };
 
-export const getStatusCategoryMap = mappedColumns => {
-  return _.chain(mappedColumns)
-    .map(column => _.get(column, 'mappedStatuses', []))
-    .flatten()
-    .reduce((accu, status) => {
+export const getStatusCategoryMap = mappedColumns =>
+  R.pipe(
+    R.map(column => R.prop('mappedStatuses', column) || []),
+    R.unnest,
+    R.reduce((accu, status) => {
       const statusId = status.id;
-      const statusCategory = _.get(status, 'statusCategory.key', '');
+      const statusCategory = R.path(['statusCategory', 'key'], status) || [];
       if (statusId && statusCategory) {
         return { ...accu, [statusId]: statusCategory };
       }
       return accu;
     }, {})
-    .value();
-};
+  )(mappedColumns);
 
 export const getAssigneesFromIssues = issues =>
   issues.reduce((prev, issue) => {
     const assigneeId = issue.assignee;
-    if (!assigneeId) {
-      return prev;
-    }
+    if (!assigneeId) return prev;
 
-    if (_.has(prev, assigneeId)) {
-      return prev;
-    }
+    if (R.has(assigneeId, prev)) return prev;
 
     return {
       ...prev,
@@ -64,38 +59,38 @@ export const getIssuesById = (issues, statusCategoryMap) =>
       ...prev,
       [issue.id]: {
         assigneeId: issue.assignee,
-        points: _.get(issue, 'estimateStatistic.statFieldValue.value', 0),
+        points:
+          R.path(['estimateStatistic', 'statFieldValue', 'value'], issue) || 0,
         statusCategory: statusCategoryMap[issue.statusId],
       },
     }),
     {}
   );
 
-export const getAssigneesBySprint = (assignees, issuesById, issuesIds) => {
-  return _.chain(issuesIds)
-    .map(issueId => issuesById[issueId])
-    .filter(
+export const getAssigneesBySprint = (assignees, issuesById, issuesIds) =>
+  R.pipe(
+    R.map(issueId => issuesById[issueId]),
+    R.filter(
       ({ assigneeId, points = 0, statusCategory }) =>
         assigneeId && points && statusCategory
-    )
-    .map(issue => issue.assigneeId)
-    .uniq()
-    .reduce(
+    ),
+    R.map(issue => issue.assigneeId),
+    R.uniq,
+    R.reduce(
       (accu, assigneeId) => ({ ...accu, [assigneeId]: assignees[assigneeId] }),
       {}
     )
-    .value();
-};
+  )(issuesIds);
 
-export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
-  return _.chain(issuesIds)
-    .map(issueId => issuesById[issueId])
-    .compact()
-    .filter(issue => {
+export const getAssigneePointsBySprint = (issuesById, issuesIds) =>
+  R.pipe(
+    R.map(issueId => issuesById[issueId]),
+    R.filter(Boolean),
+    R.filter(issue => {
       const { assigneeId, points = 0, statusCategory } = issue;
       return assigneeId && points && statusCategory;
-    })
-    .reduce((prev, issue) => {
+    }),
+    R.reduce((prev, issue) => {
       const { assigneeId, points = 0, statusCategory } = issue;
       const oldAssigneePoints = prev[assigneeId];
       const newAssigneePoints = addPointsByCategory(
@@ -108,8 +103,7 @@ export const getAssigneePointsBySprint = (issuesById, issuesIds) => {
         [assigneeId]: newAssigneePoints,
       };
     }, {})
-    .value();
-};
+  )(issuesIds);
 
 export const getSprints = (issues, sprints, statusCategoryMap) => {
   const assignees = getAssigneesFromIssues(issues);
@@ -127,10 +121,10 @@ export const getSprints = (issues, sprints, statusCategoryMap) => {
 };
 
 const processResponses = responses => {
-  const issues = _.get(responses, '[0].body.issues', []);
-  const sprints = _.get(responses, '[0].body.sprints', []);
+  const issues = R.path([0, 'body', 'issues'], responses) || [];
+  const sprints = R.path([0, 'body', 'sprints'], responses) || [];
   const statusCategoryMap = getStatusCategoryMap(
-    _.get(responses, '[1].body.rapidListConfig.mappedColumns', [])
+    R.path([1, 'body', 'rapidListConfig', 'mappedColumns'], responses) || []
   );
 
   if (!sprints.length) return null;

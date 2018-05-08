@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as R from 'ramda';
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
@@ -101,7 +101,7 @@ export default class Popover extends PureComponent {
 
     this.state = {
       show: false,
-      visibleSprints: new Set([_.get(props, 'sprints[0].id')]),
+      visibleSprints: new Set([R.path(['sprints', 0, 'id'], props)]),
     };
   }
 
