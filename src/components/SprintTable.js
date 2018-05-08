@@ -19,18 +19,17 @@ const SprintTable = ({
 }) => {
   const assignees = getObjectValues(assigneeMap);
 
-  const totalStoryPoints = assignees.reduce(
-    (prev, assignee) => prev + getTotalPoints(pointsByAssignee[assignee.id]),
-    0
-  );
+  const totalStoryPoints = R.pipe(
+    R.map(assignee => getTotalPoints(pointsByAssignee[assignee.id])),
+    R.sum
+  )(assignees);
 
-  if (totalStoryPoints === 0) {
+  if (totalStoryPoints === 0)
     return (
       <p>
         <strong>{name}:</strong> {i18n('txtErrNoStoryPoints')}
       </p>
     );
-  }
 
   const sortedAssignees = sortObjectsByName(assignees);
 
