@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import fetchData from './fetchData';
 import Popover from './components/Popover';
 
-const CONTAINER_ID = 'jira-taskboard-helper';
+const CONTAINER_ID = 'jira-story-points-helper';
 
 // append container to body
 (() => {
