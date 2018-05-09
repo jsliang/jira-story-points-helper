@@ -1,3 +1,3 @@
-const i18n = msgKey => chrome.i18n.getMessage(msgKey);
+const i18n = chrome.i18n.getMessage;
 
 export default i18n;

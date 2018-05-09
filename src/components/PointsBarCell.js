@@ -9,12 +9,13 @@ import {
   STATUS_BORDER_RADIUS,
   STATUS_FONT_COLOR,
 } from './constants';
+import i18n from './utils/i18n';
 import formatNumber from './utils/formatNumber';
 
 const STATUS_TEXT = {
-  [STATUS_NEW]: chrome.i18n.getMessage('txtNew'),
-  [STATUS_INDETERMINATE]: chrome.i18n.getMessage('txtIndeterminate'),
-  [STATUS_DONE]: chrome.i18n.getMessage('txtDone'),
+  [STATUS_NEW]: i18n('txtNew'),
+  [STATUS_INDETERMINATE]: i18n('txtIndeterminate'),
+  [STATUS_DONE]: i18n('txtDone'),
 };
 
 const PointsBarCell = ({
