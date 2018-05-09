@@ -62,17 +62,12 @@ const SprintTable = ({
             const assigneeId = assignee.id;
             const points = pointsByAssignee[assigneeId];
 
-            const totalPoints = getTotalPoints(points);
-
-            if (totalPoints <= 0) return null;
-
             return (
               <AssigneeRow
                 avatarUrl={assignee.avatarUrl}
                 key={assigneeId}
                 name={assignee.name}
                 points={points}
-                totalPoints={totalPoints}
               />
             );
           })}
